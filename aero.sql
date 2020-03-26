@@ -44,6 +44,8 @@ CREATE TABLE place(
 
 CREATE TABLE volpassager(
 	numvolpassager INTEGER not null,
+	dateVol DATE,
+	datedepart DATE,
 	heuredepart TIMESTAMP,
 	dureevol INTEGER,
 	distancevol INTEGER,	
@@ -64,6 +66,7 @@ CREATE TABLE pilote(
 	ruepersonnelPilote VARCHAR(30),
 	payspersonnelPilote VARCHAR(30),
 	nbheurepilote INTEGER,
+	localisationActuellePilote VARCHAR(30),
 	nummodel INTEGER,
 	numvolpassager INTEGER,
 	CONSTRAINT pk_numpilote PRIMARY KEY (numpilote),
@@ -79,6 +82,7 @@ CREATE TABLE hotesse(
 	languematernelle VARCHAR(30),
 	deuxiemelangue VARCHAR(30),
 	troisiemelangue VARCHAR(30),
+	localisationActuelleHotesse VARCHAR(30),
 	nbheurehotesse INTEGER,
 	nummodel INTEGER,
 	numvolpassager INTEGER,

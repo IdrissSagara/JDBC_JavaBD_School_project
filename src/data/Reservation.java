@@ -1,7 +1,6 @@
 package data;
-import connexion.bd_connexion;
 
-public class reservation {
+public class Reservation {
 	private int numReservation;
 	private int dateReservation;
 	private int numPlace;

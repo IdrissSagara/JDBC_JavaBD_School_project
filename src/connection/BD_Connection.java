@@ -1,4 +1,9 @@
-package connexion;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package connection;
 
 import java.beans.Statement;
 import java.sql.Connection;
@@ -7,13 +12,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
-public class bd_connexion {
+public class BD_Connection {
+
     private static Connection conn;
     private static String USER = "";
     private static String PASSWD = "";
 
     // static final String CONN_URL = "jdbc:oracle:thin:@im2ag-oracle.e.ujf-grenoble.fr:1521:im2ag";
-    public bd_connexion() throws SQLException {
+    public BD_Connection() throws SQLException {
     }
 
     public static Connection getConnection() {

@@ -1,6 +1,6 @@
 package data;
 
-public class avion {
+public class Avion {
 
 	private int numAvionPassager;
 	private int nombrePlaceEco;

@@ -1,0 +1,4 @@
+
+ssh -X sagarai@im2ag-oracle.e.ujf-grenoble.fr 
+
+setenv ORACLE_SID im2ag

@@ -1,6 +1,6 @@
 package data;
 
-public class place {
+public class Place {
 	
 	private int numPlace;
 	private String position;
