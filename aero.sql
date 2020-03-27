@@ -2,6 +2,7 @@
 DROP TABLE reservation;
 DROP TABLE client;
 DROP TABLE hotesse;
+DROP TABLE qualification;
 DROP TABLE pilote;
 DROP TABLE volpassager;
 DROP TABLE avionpassager;
@@ -44,9 +45,8 @@ CREATE TABLE place(
 
 CREATE TABLE volpassager(
 	numvolpassager INTEGER not null,
-	dateVol DATE,
-	datedepart DATE,
-	heuredepart TIMESTAMP,
+	dateEnregistrementVol DATE,
+	datedepart TIMESTAMP,
 	dureevol INTEGER,
 	distancevol INTEGER,	
 	aeroportorigine VARCHAR(30),
@@ -72,6 +72,16 @@ CREATE TABLE pilote(
 	CONSTRAINT pk_numpilote PRIMARY KEY (numpilote),
 	CONSTRAINT fk_pilote_modele FOREIGN KEY (nummodel) REFERENCES modele (nummodel),
 	CONSTRAINT fk_personnel_volpassager FOREIGN KEY (numvolpassager) REFERENCES volpassager (numvolpassager)
+
+);
+
+CREATE TABLE qualification(
+	numQualificationPilote INTEGER,
+	numvolpassager INTEGER,
+	numpilote INTEGER,
+	CONSTRAINT pk_qualification PRIMARY KEY (numQualificationPilote),
+	CONSTRAINT fk_volpassager_qualification FOREIGN KEY (numvolpassager) REFERENCES volpassager (numvolpassager),
+	CONSTRAINT fk_pilote_qualification FOREIGN KEY (numpilote) REFERENCES pilote (numpilote)
 
 );
 

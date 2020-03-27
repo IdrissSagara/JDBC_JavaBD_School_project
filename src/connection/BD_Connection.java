@@ -15,7 +15,7 @@ import java.sql.SQLException;
 public class BD_Connection {
 
     private static Connection conn;
-    private static String USER = "";
+    private static String USER = "sagarai";
     private static String PASSWD = "";
 
     // static final String CONN_URL = "jdbc:oracle:thin:@im2ag-oracle.e.ujf-grenoble.fr:1521:im2ag";
@@ -26,7 +26,7 @@ public class BD_Connection {
         try {
             if (conn == null) {
                 Class.forName("oracle.jdbc.driver.OracleDriver");
-                conn = DriverManager.getConnection("jdbc:oracle:thin:@im2ag-oracle.e.ujf-grenoble.fr:1521:im2ag", "sagarai", "Sagara1992");
+                conn = DriverManager.getConnection("jdbc:oracle:thin:@im2ag-oracle.e.ujf-grenoble.fr:1521:im2ag", "sagarai", "Sagara1404");
 
             }
         } catch (Exception e) {

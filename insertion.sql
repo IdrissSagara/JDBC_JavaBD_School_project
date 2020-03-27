@@ -26,16 +26,16 @@ insert into place values (16,'centre','affaire',700,TO_DATE('24-03-2019','DD-MM-
 insert into place values (17,'centre','eco',200,TO_DATE('23-03-2019','DD-MM-YYYY'),8);
 
 
-insert into volpassager values (144,TO_DATE('20-03-2019','DD-MM-YYYY'),TO_DATE('20-03-2019','DD-MM-YYYY'),TO_TIMESTAMP('2014-07-02 06:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),8,3323,'Mali','France',400,20,30,12);
-insert into volpassager values (145,TO_DATE('20-03-2019','DD-MM-YYYY'),TO_DATE('20-03-2019','DD-MM-YYYY'),TO_TIMESTAMP('2014-07-05 07:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),33,5223,'ALGERIE','France',400,20,30,13);
-insert into volpassager values (146,TO_DATE('20-03-2019','DD-MM-YYYY'),TO_DATE('20-03-2019','DD-MM-YYYY'),TO_TIMESTAMP('2014-07-02 08:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),22,1223,'MAROC','France',400,20,30,32);
-insert into volpassager values (147,TO_DATE('20-03-2019','DD-MM-YYYY'),TO_DATE('20-03-2019','DD-MM-YYYY'),TO_TIMESTAMP('2014-07-03 03:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),8,2623,'CAMEROUNE','France',400,20,30,22);
-insert into volpassager values (148,TO_DATE('20-03-2019','DD-MM-YYYY'),TO_DATE('20-03-2019','DD-MM-YYYY'),TO_TIMESTAMP('2014-07-05 02:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),8,2223,'Mali','France',400,20,30,42);
-insert into volpassager values (149,TO_DATE('20-03-2019','DD-MM-YYYY'),TO_DATE('20-03-2019','DD-MM-YYYY'),TO_TIMESTAMP('2014-07-06 01:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),8,2923,'Mali','France',400,20,30,52);
-insert into volpassager values (140,TO_DATE('20-03-2019','DD-MM-YYYY'),TO_DATE('20-03-2019','DD-MM-YYYY'),TO_TIMESTAMP('2014-07-07 09:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),44,8223,'TUNIS','France',400,20,30,52);
-insert into volpassager values (141,TO_DATE('20-03-2019','DD-MM-YYYY'),TO_DATE('20-03-2019','DD-MM-YYYY'),TO_TIMESTAMP('2014-07-08 09:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),8,2223,'GUINNE','France',400,20,30,62);
-insert into volpassager values (142,TO_DATE('20-03-2019','DD-MM-YYYY'),TO_DATE('20-03-2019','DD-MM-YYYY'),TO_TIMESTAMP('2014-07-09 09:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),66,2333,'Mali','France',400,20,30,12);
-insert into volpassager values (143,TO_DATE('20-03-2019','DD-MM-YYYY'),TO_DATE('20-03-2019','DD-MM-YYYY'),TO_TIMESTAMP('2014-07-02 06:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),8,1123,'USA','France',400,20,30,12);
+insert into volpassager values (144,TO_DATE('20-03-2019','DD-MM-YYYY'),TO_TIMESTAMP('2014-07-02 06:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),8,3323,'Mali','France',400,20,30,12);
+insert into volpassager values (145,TO_DATE('20-03-2019','DD-MM-YYYY'),TO_TIMESTAMP('2014-07-02 06:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),33,5223,'ALGERIE','France',400,20,30,13);
+insert into volpassager values (146,TO_DATE('20-03-2019','DD-MM-YYYY'),TO_TIMESTAMP('2014-07-02 08:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),22,1223,'MAROC','France',400,20,30,32);
+insert into volpassager values (147,TO_DATE('20-03-2019','DD-MM-YYYY'),TO_TIMESTAMP('2014-07-03 03:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),8,2623,'CAMEROUNE','France',400,20,30,22);
+insert into volpassager values (148,TO_DATE('20-03-2019','DD-MM-YYYY'),TO_TIMESTAMP('2014-07-05 02:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),8,2223,'Mali','France',400,20,30,42);
+insert into volpassager values (149,TO_DATE('20-03-2019','DD-MM-YYYY'),TO_TIMESTAMP('2014-07-06 01:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),8,2923,'Mali','France',400,20,30,52);
+insert into volpassager values (140,TO_DATE('20-03-2019','DD-MM-YYYY'),TO_TIMESTAMP('2014-07-07 09:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),44,8223,'TUNIS','France',400,20,30,52);
+insert into volpassager values (141,TO_DATE('20-03-2019','DD-MM-YYYY'),TO_TIMESTAMP('2014-07-08 09:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),8,2223,'GUINNE','France',400,20,30,62);
+insert into volpassager values (142,TO_DATE('20-03-2019','DD-MM-YYYY'),TO_TIMESTAMP('2014-07-09 09:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),66,2333,'Mali','France',400,20,30,12);
+insert into volpassager values (143,TO_DATE('20-03-2019','DD-MM-YYYY'),TO_TIMESTAMP('2014-07-02 06:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),8,1123,'USA','France',400,20,30,12);
 
 
 insert into pilote values (10,'momo','toure','rue askia modibo','Mali',500,'Marseille',2,140);
@@ -48,6 +48,17 @@ insert into pilote values (16,'soufiane','kabad','rue beta ','Mali',600,'kati',7
 insert into pilote values (17,'idriss','sagara','rue askia ','ALGER',300,'vienne',8,147);
 insert into pilote values (18,'yacouba','sagara','rue bu ','Mali',100,'gao',4,148);
 insert into pilote values (19,'addrahamane','ab','rue as be','TUNIS',50,'kidal',5,148);
+
+insert into qualification values (1,144,10);
+insert into qualification values (2,144,11);
+insert into qualification values (3,145,12);
+insert into qualification values (4,145,12);
+insert into qualification values (5,146,13);
+insert into qualification values (6,146,13);
+insert into qualification values (7,147,14);
+insert into qualification values (8,147,14);
+insert into qualification values (9,148,15);
+
 
 insert into hotesse values (20,'mousou','prpe','Arabe','Français','espagnol','Marseille',500,2,140);
 insert into hotesse values (21,'BATOS','toi','bambara','Français','espagnol','egypte',500,3,141);
