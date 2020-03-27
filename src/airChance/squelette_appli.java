@@ -30,6 +30,7 @@ public class squelette_appli {
 	            // code m�tier de la fonctionnalit�
 	            // Liberation des ressources et fermeture de la connexion...
 	            // A COMPLETER
+	            // conn.close();
 
 	            System.out.println("bye.");
 

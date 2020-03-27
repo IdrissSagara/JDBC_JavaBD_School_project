@@ -1,19 +1,28 @@
 package data;
 
+import connection.BD_Connection;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
+import java.sql.Date;
 import java.util.List;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+
 
 
 public class VolPassager {
 
 	private int numeroVolPassager;
-	private Date date = new Date();
-	private int heureDepart;
+	private Date date;
+	private Date datedepart;
+	private Timestamp heureDepart;
 	private int dureeVol;
 	private int distanceVol;	
 	private String aeroportOrigine;
@@ -24,6 +33,18 @@ public class VolPassager {
 	private int numAvionPassager;
 	
 	
+	public Date getDatedepart() {
+		return datedepart;
+	}
+	public void setDatedepart(Date datedepart) {
+		this.datedepart = datedepart;
+	}
+	public Timestamp getHeureDepart() {
+		return heureDepart;
+	}
+	public void setHeureDepart(Timestamp heureDepart) {
+		this.heureDepart = heureDepart;
+	}
 	public Date getDate() {
 		return date;
 	}
@@ -36,12 +57,7 @@ public class VolPassager {
 	public void setNumeroVolPassager(int numeroVolPassager) {
 		this.numeroVolPassager = numeroVolPassager;
 	}
-	public int getHeureDepart() {
-		return heureDepart;
-	}
-	public void setHeureDepart(int heureDepart) {
-		this.heureDepart = heureDepart;
-	}
+	
 	public int getDureeVol() {
 		return dureeVol;
 	}
@@ -94,7 +110,7 @@ public class VolPassager {
 	public VolPassager() {
 	    }
 	
-	public VolPassager(int numeroVolPassager, int heureDepart, int dureeVol, int distanceVol, String aeroportOrigine,
+	public VolPassager(int numeroVolPassager, Timestamp heureDepart, int dureeVol, int distanceVol, String aeroportOrigine,
 			String aeroportDestination, int nombreplaceDispoEco, int nombrePlaceDispoAff, int nombreplacedispopre,
 			int numAvionPassager) {
 		this.numeroVolPassager = numeroVolPassager;
@@ -112,6 +128,20 @@ public class VolPassager {
 		this.numeroVolPassager = numeroVolPassager;
 		this.dureeVol = dureeVol;
 	}
+	
+    public static Timestamp stringVersDate(String chaine) throws ParseException{
+        // System.err.println("--Date debut reservation-- ");
+        
+        String DateDebutString = chaine;
+        System.out.println(DateDebutString);
+   		DateFormat formatter;
+        formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+ 	
+  
+         java.util.Date DateDebut = formatter.parse(DateDebutString);
+         Timestamp ds = new Timestamp(DateDebut.getTime());
+         return ds;
+     }
 	
     public List<String> delete(int numVolPassager, Date date) {
 
@@ -133,14 +163,40 @@ public class VolPassager {
         return listquery;
     }
     
-    public String insertVol(int numVol, String origine, String destination, int numAvion) {
-
-        SimpleDateFormat formater = null;
-        formater = new SimpleDateFormat("yyyy-mm-dd");
-        String query = "INSERT INTO volpassager values (" + numVol + "','" + this.heureDepart + ",TO_DATE('" + formater.format(this.date) + "','yyyy-mm-dd'),'" +  "','" + this.dureeVol + "','" + this.distanceVol + "','" + origine  + "','" + destination + "','"  +this.nombreplaceDispoEco + "','" + this.nombrePlaceDispoAff + "','" + this.nombreplacedispopre +  "','" + numAvion + "',)";
-
-      
-        return query;
+    public static void insertVol(Connection conn, int numVol, String origine, String destination, int numAvion, 
+    		Timestamp dateDepart, int dureeVol, int distanceVol, int nbrPlaceEco, int nbrPlaceAff, int nbrPlacePre) {
+    	//Connection conn = BD_Connection.getConnection();
+    	PreparedStatement ps;
+        ResultSet resultats;
+        try {
+        	SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-mm-dd");
+            SimpleDateFormat timestampFormater =  new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            
+            //String query = "INSERT INTO volpassager values (" + numVol + "," + "TO_DATE('" + formater.format(this.date) + "','YYYY-MM-DD')" + ","+ "TO_DATE('" + formater.format(this.datedepart) + "','YYYY-MM-DD'),"+ "TO_TIMESTAMP('" + formatter.format(this.heureDepart) + "','YYYY-MM-DD HH24:MI:SS.FF')"+ ","+ this.dureeVol + "," + this.distanceVol + ",'" + origine  + "','" + destination + "',"+this.nombreplaceDispoEco + "," + this.nombrePlaceDispoAff + "," + this.nombreplacedispopre +  "," + numAvion + ")";
+            String query = "insert into volpassager (NUMVOLPASSAGER, dateEnregistrementVol, DATEDEPART, "
+            		+ "DUREEVOL, DISTANCEVOL, AEROPORTORIGINE, AEROPORTDESTINATION, NOMBREPLACEDISPOECO, "
+            		+ "NOMBREPLACEDISPOEAFF, NOMBREPLACEDISPOPRE, NUMAVIONPASSAGER) values"
+            		+ "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            
+            ps = conn.prepareStatement(query);
+            int i = 1;
+            ps.setInt(i++, numVol);
+            ps.setDate(i++, new java.sql.Date(Calendar.getInstance().getTime().getTime()));
+            ps.setTimestamp(i++, dateDepart);
+            ps.setInt(i++, dureeVol);
+            ps.setInt(i++, distanceVol);
+            ps.setString(i++, origine);
+            ps.setString(i++, destination);
+            ps.setInt(i++, nbrPlaceEco);
+            ps.setInt(i++, nbrPlaceAff);
+            ps.setInt(i++, nbrPlacePre);
+            ps.setInt(i++, numAvion);
+            ps.execute();
+            
+		} catch (Exception e) {
+			System.out.println("Echec"+e);
+		}
+    	
     }
 
     public String delete(int numVolPassager) {
