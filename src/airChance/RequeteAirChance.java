@@ -109,16 +109,23 @@ public class RequeteAirChance {
 
 		System.out.println("===========================\n===========================\n===========================\nA partir d'ici nous allons gérer l'aspect concurentiel\n===========================\n===========================\n===========================\n");
 
+		//recuperer le nombre de pilotes necessaires pour piloter ce vol
+		//proposer ensuite de les selectionner parmis ceux qualifiés pour le faire
+
 		rs = Pilote.getPiloteQualifierVol(conn, numVol);
 
 		System.out.println("Les pilotes qualifiés pour le vol " + numVol);
 		int maxIdPil = 0;
+		String nomPil = "";
+		String prenomPil = "";
 		while (rs.next()) {
 			int idPil = rs.getInt(1);
 			if (idPil > maxIdPil) maxIdPil = idPil;
 			System.out.print(idPil + "\t");
-			System.out.print(rs.getString(2) + "\t");
-			System.out.println(rs.getString(2));
+			nomPil = rs.getString(2);
+			prenomPil = rs.getString(3);
+			System.out.print(prenomPil + "\t");
+			System.out.println(nomPil);
 		}
 
 		int numPil = DemandeSaisie.saisirInt("Saisissez le numéro du pilote", 0, maxIdPil);
@@ -154,17 +161,21 @@ public class RequeteAirChance {
 
 		int minId = hl.get(0).getNumHotesse(), maxId = 0;
 
+		int index = 1;
 		for (Hotesse h : hl) {
 			if (h.getNumHotesse() > maxId) maxId = h.getNumHotesse();
 			if (h.getNumHotesse() < minId) minId = h.getNumHotesse();
-			System.out.println(h.getNumHotesse() + " - " + h.getPrenomPersonnelHotesse() + " " + h.getNomPersonnelHotesse());
+			System.out.println(index++ + " - " + h.getPrenomPersonnelHotesse() + " " + h.getNomPersonnelHotesse());
 		}
 
 		HotesseVolDao hotesseVolDao = HotesseVolDao.getInstance(conn);
 
 		System.out.println("Saisissez 3 hotesses");
+		List<Hotesse> listChoixHotesse = new ArrayList<Hotesse>();
 		for (int i = 0; i < 3; i++) {
-			int numHotesse = DemandeSaisie.saisirInt("Saisissez le numéro de l'hotesse n°" + i + 1, minId, maxId);
+			int choix = DemandeSaisie.saisirInt("Saisissez le numéro de l'hotesse n°" + i + 1, 1, hl.size());
+			listChoixHotesse.add(hl.get(choix));
+			int numHotesse = hl.get(choix - 1).getNumHotesse();
 			int res = hotesseVolDao.insert(numVol, numHotesse);
 
 			if (res == -1) {
@@ -172,7 +183,24 @@ public class RequeteAirChance {
 			}
 		}
 
-		System.out.println("Résumé de la planification du vol");
+		System.out.println("Résumé de la planification du vol " + numVol);
+		System.out.println("Détails du vol");
+		System.out.println("Durée: " + dureeVol);
+		System.out.println("Distance: " + distanceVol);
+		System.out.println("Places affaires: " + nbrPlaceAff);
+		System.out.println("Places eco: " + nbrPlaceEco);
+		System.out.println("Places prémière: " + nbrPlacePre);
+		System.out.println("Départ: " + dateDepart);
+
+		System.out.println("Pilote selectionné pour le vol");
+		System.out.println("Prenom: " + prenomPil);
+		System.out.println("Nom: " + nomPil);
+
+		System.out.println("Liste des hotesses choisis");
+		index = 1;
+		for (Hotesse h : listChoixHotesse) {
+			System.out.println(index++ + " - " + h.getPrenomPersonnelHotesse() + " " + h.getNomPersonnelHotesse());
+		}
 
 		rs.close();
 		stmt.close();
