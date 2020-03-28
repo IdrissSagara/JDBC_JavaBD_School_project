@@ -1,4 +1,4 @@
-package airChance;
+package dao;
 
 import java.sql.*;
 

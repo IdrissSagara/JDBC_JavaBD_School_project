@@ -2,6 +2,7 @@ package airChance;
 
 import connection.BD_Connection;
 import dao.HotesseDao;
+import dao.ModelDao;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -39,7 +40,7 @@ public class TestVolPassager {
 			e.printStackTrace();
 		}*/
 
-		HotesseVolDao hotesseVolDao = HotesseVolDao.getInstance(conn);
+		/*HotesseVolDao hotesseVolDao = HotesseVolDao.getInstance(conn);
 		try {
 			int id = hotesseVolDao.insert(150, 29);
 			System.out.println("valeur de id retournée" + id);
@@ -51,6 +52,14 @@ public class TestVolPassager {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+		}*/
+
+		ModelDao modelDao = ModelDao.getInstance(conn);
+		try {
+			int nb = modelDao.getNombrePiloteNecessaire(152);
+			System.out.println("nb necessaire " + nb);
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 

@@ -1,7 +1,6 @@
 package airChance;
 
-import dao.HotesseDao;
-import dao.PiloteVolDao;
+import dao.*;
 import data.Hotesse;
 import data.Pilote;
 import data.VolPassager;
@@ -34,10 +33,7 @@ public class RequeteAirChance {
 
 		//recherche des avion disponibles
 		ResultSet rs = stmt.executeQuery("select a.numavionpassager, nummodel from avionpassager a where a.numavionpassager NOT IN (select v.numavionpassager from volpassager v)");
-		while (rs.next()) {
-			System.out.print("  Num Avion : " + rs.getInt(1) + " ");
-			System.out.println("  Num Modele : " + rs.getInt(2) + " ");
-		}
+
 
 		rs = stmt.executeQuery("select v.numavionpassager, max(v.datedepart) from avionpassager a \n"
 				+ "join volpassager v on v.numavionpassager = a.numavionpassager \n"
@@ -53,18 +49,6 @@ public class RequeteAirChance {
 
 			listVolPassager.add(vp);
 
-		}
-		for (int y = 0; y < listVolPassager.size(); y++) {
-			VolPassager vp2 = listVolPassager.get(y);
-
-			ResultSet rs2 = stmt.executeQuery("select distinct v.numavionpassager, av.nummodel from volpassager v join avionpassager av on av.numavionpassager = v.numavionpassager  where v.numavionpassager = " + vp2.getNumAvionPassager());
-			while (rs2.next()) {
-
-				if (rs2.getInt(2) == 1) {
-					System.out.print("  Num Avion : " + rs2.getInt(1) + " ");
-					System.out.println("  Num Modele : " + rs2.getInt(3) + " ");
-				}
-			}
 		}
 
 
@@ -86,8 +70,6 @@ public class RequeteAirChance {
 		numVol++;
 
 		// demander toutes les infos necessaires à enreg un vol
-		/*insertVol(Connection conn, int numVol, String origine, String destination, int numAvion, 
-        		Timestamp dateDepart, int dureeVol, int distanceVol, int nbrPlaceEco, int nbrPlaceAff, int nbrPlacePre)*/
 		int dureeVol = DemandeSaisie.saisirInt("Saisissez la duree du vol", 0, 10000);
 		int distanceVol = DemandeSaisie.saisirInt("Saisissez la distance du vol", 0, 200000);
 		int nbrPlaceAff = DemandeSaisie.saisirInt("Saisissez le nombre de place affaires disponibles", 0, 200);
@@ -105,16 +87,18 @@ public class RequeteAirChance {
 		//Creation de vol
 		VolPassager.insertVol(conn, numVol, origine, destination, numAvion, dateDepart, dureeVol, distanceVol, nbrPlaceEco, nbrPlaceAff, nbrPlacePre);
 
-		System.out.println("\nA ce stade, nous avons crée notre vol avec les informations suivantes : Aeroport Origine, Aeroport Destination ....\n\nNous allons désormais affecter du personnel à ce vol");
+		System.out.println("\nA ce stade, nous avons crée notre vol avec les informations necessaire .\n");
 
-		System.out.println("===========================\n===========================\n===========================\nA partir d'ici nous allons gérer l'aspect concurentiel\n===========================\n===========================\n===========================\n");
+		System.out.println("===========================\n===========================\n===========================\nNous allons désormais affecter du personnel à ce vol\n===========================\n===========================\n===========================\n");
 
 		//recuperer le nombre de pilotes necessaires pour piloter ce vol
 		//proposer ensuite de les selectionner parmis ceux qualifiés pour le faire
+		ModelDao modelDao = ModelDao.getInstance(conn);
+		int nbPiloteNecessaire = modelDao.getNombrePiloteNecessaire(numVol);
 
 		rs = Pilote.getPiloteQualifierVol(conn, numVol);
 
-		System.out.println("Les pilotes qualifiés pour le vol " + numVol);
+		System.out.println("Les pilotes qualifiés pour le vol : " + numVol);
 		int maxIdPil = 0;
 		String nomPil = "";
 		String prenomPil = "";
@@ -128,20 +112,24 @@ public class RequeteAirChance {
 			System.out.println(nomPil);
 		}
 
-		int numPil = DemandeSaisie.saisirInt("Saisissez le numéro du pilote", 0, maxIdPil);
+		System.out.println(nbPiloteNecessaire + "Les pilotes sont necessaires pour ce vol\n");
+		for (int i = 0; i < nbPiloteNecessaire; i++) {
 
-		//insert valeur dans pilote_vol
-		PiloteVolDao piloteVolDao = PiloteVolDao.getInstance(conn);
-		int insertedId = -1;
-		try {
-			insertedId = piloteVolDao.insert(numPil, numVol);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+			int numPil = DemandeSaisie.saisirInt("Saisissez le numéro du pilote", 0, maxIdPil);
 
-		if (insertedId == -1) {
-			System.out.println("Une erreur fatale s'est produite lors de l'insertion du pilote_vol");
-			return;
+			//insert valeur dans pilote_vol
+			PiloteVolDao piloteVolDao = PiloteVolDao.getInstance(conn);
+			int insertedId = -1;
+			try {
+				insertedId = piloteVolDao.insert(numPil, numVol);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+			if (insertedId == -1) {
+				System.out.println("Une erreur fatale s'est produite lors de l'insertion du pilote_vol");
+				return;
+			}
 		}
 
 		//afficcher les hotesses
@@ -159,12 +147,8 @@ public class RequeteAirChance {
 			return;
 		}
 
-		int minId = hl.get(0).getNumHotesse(), maxId = 0;
-
 		int index = 1;
 		for (Hotesse h : hl) {
-			if (h.getNumHotesse() > maxId) maxId = h.getNumHotesse();
-			if (h.getNumHotesse() < minId) minId = h.getNumHotesse();
 			System.out.println(index++ + " - " + h.getPrenomPersonnelHotesse() + " " + h.getNomPersonnelHotesse());
 		}
 
@@ -183,8 +167,8 @@ public class RequeteAirChance {
 			}
 		}
 
-		System.out.println("Résumé de la planification du vol " + numVol);
-		System.out.println("Détails du vol");
+		System.out.println("Résumé de la planification du vol " + numVol + "\n");
+		System.out.println("Détails du vol qu'on à planifier : ");
 		System.out.println("Durée: " + dureeVol);
 		System.out.println("Distance: " + distanceVol);
 		System.out.println("Places affaires: " + nbrPlaceAff);
@@ -192,7 +176,7 @@ public class RequeteAirChance {
 		System.out.println("Places prémière: " + nbrPlacePre);
 		System.out.println("Départ: " + dateDepart);
 
-		System.out.println("Pilote selectionné pour le vol");
+		System.out.println("\nPilote selectionné pour le vol :");
 		System.out.println("Prenom: " + prenomPil);
 		System.out.println("Nom: " + nomPil);
 
@@ -202,8 +186,48 @@ public class RequeteAirChance {
 			System.out.println(index++ + " - " + h.getPrenomPersonnelHotesse() + " " + h.getNomPersonnelHotesse());
 		}
 
+		System.out.println("Merci la planification est terminer.\n");
+
 		rs.close();
 		stmt.close();
 	}
 
+	public static void updatePilote(Connection conn) {
+		PiloteDao piloteDao = PiloteDao.getInstance(conn);
+		List<Pilote> piloteList = new ArrayList<>();
+		try {
+			piloteList = piloteDao.getAll();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		int index = 1;
+		for (Pilote p : piloteList) {
+			System.out.println(index++ + " - " + p.getPrenomPersonnelPilote() + " " + p.getNomPersonnelPilote());
+		}
+
+		int choix = DemandeSaisie.saisirInt("Saisir le numéro du pilote", 1, piloteList.size());
+		int numPilote = piloteList.get(choix).getNumPilote();
+
+		String nomPersonnelPilote = DemandeSaisie.saisirString("Saisir nom pilote", 0, 30);
+		String prenomPersonnelPilote = DemandeSaisie.saisirString("Saisir prenom pilote", 0, 30);
+		String ruePersonnelPilote = DemandeSaisie.saisirString("Saisir rue pilote", 0, 30);
+		String paysPersonnelPilote = DemandeSaisie.saisirString("Saisir pays pilote", 0, 30);
+		String localisationActuellePilote = DemandeSaisie.saisirString("Saisir localisation actuelle pilote", 0, 30);
+
+		try {
+			piloteDao.updateUsingProcedure(nomPersonnelPilote,
+					prenomPersonnelPilote, ruePersonnelPilote,
+					paysPersonnelPilote, localisationActuellePilote, numPilote);
+
+			System.out.println("Le pilote n°" + numPilote + " a été modifié avec les valeurs suivantes: ");
+			System.out.println("Nom: " + nomPersonnelPilote);
+			System.out.println("Prenom: " + prenomPersonnelPilote);
+			System.out.println("Rue: " + ruePersonnelPilote);
+			System.out.println("Pays: " + paysPersonnelPilote);
+			System.out.println("Localisation: " + localisationActuellePilote);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 }

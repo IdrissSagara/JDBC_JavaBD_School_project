@@ -2,10 +2,9 @@ package dao;
 
 import data.Pilote;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PiloteDao {
     private static PiloteDao piloteDao = null;
@@ -21,6 +20,14 @@ public class PiloteDao {
         }
 
         return piloteDao;
+    }
+
+    public List<Pilote> getAll() throws SQLException {
+        String query = "select * from PILOTE";
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery(query);
+
+        return makePiloteList(rs);
     }
 
     public Pilote getById(int numpilote) throws SQLException {
@@ -53,5 +60,35 @@ public class PiloteDao {
         }
 
         return p;
+    }
+
+    private List<Pilote> makePiloteList(ResultSet rs) throws SQLException {
+        List<Pilote> pl = new ArrayList<>();
+        Pilote p = null;
+
+        while (rs.next()) {
+            p = mapResultSetToPilote(rs);
+            pl.add(p);
+        }
+        return pl;
+    }
+
+    public void updateUsingProcedure(String nomPersonnelPilote,
+                                     String prenomPersonnelPilote,
+                                     String ruePersonnelPilote,
+                                     String paysPersonnelPilote,
+                                     String localisationActuellePilote,
+                                     int numPilote) throws SQLException {
+        String pName = "{ call updatePilote(?, ?, ?, ?, ?, ?) }";
+        CallableStatement cstmt = conn.prepareCall(pName);
+        int i = 1;
+        cstmt.setString(i++, nomPersonnelPilote);
+        cstmt.setString(i++, prenomPersonnelPilote);
+        cstmt.setString(i++, ruePersonnelPilote);
+        cstmt.setString(i++, paysPersonnelPilote);
+        cstmt.setString(i++, localisationActuellePilote);
+        cstmt.setInt(i++, numPilote);
+
+        cstmt.executeUpdate();
     }
 }

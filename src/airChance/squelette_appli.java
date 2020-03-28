@@ -68,23 +68,23 @@ public class squelette_appli {
 	            //RequeteAirChance.scenario1(conn, conn2);
 	            choix = LectureClavier.lireEntier("Votre choix : \n");
 	            switch (choix) {
-	                case 1:
-	                    System.out.println("******************************");
-	                    RequeteAirChance.planificationVol(conn);
-	                    break;
-	                case 2:
-	                    System.out.println("******************************");
-	                    //RequeteAirChance.updatePilote(conn);
-	                    break;
-	                case 3:
-	                    System.out.println("******************************");
-	                    //RequeteAirChance.deleteVol(conn);
-	                    break;
-	                case 4:
-	                    System.out.println("******************************");
-	                    break;
-	                case 5:
-	                    System.out.println("******************************");
+					case 1:
+						System.out.println("******************************");
+						RequeteAirChance.planificationVol(conn);
+						break;
+					case 2:
+						System.out.println("******************************");
+						RequeteAirChance.updatePilote(conn);
+						break;
+					case 3:
+						System.out.println("******************************");
+						//RequeteAirChance.deleteVol(conn);
+						break;
+					case 4:
+						System.out.println("******************************");
+						break;
+					case 5:
+						System.out.println("******************************");
 	                    break;
 	                case 6:
 	                    System.out.println("******************************");
