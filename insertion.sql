@@ -38,38 +38,60 @@ insert into volpassager values (142,TO_DATE('20-03-2019','DD-MM-YYYY'),TO_TIMEST
 insert into volpassager values (143,TO_DATE('20-03-2019','DD-MM-YYYY'),TO_TIMESTAMP('2014-07-02 06:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),8,1123,'USA','France',400,20,30,12);
 
 
-insert into pilote values (10,'momo','toure','rue askia modibo','Mali',500,'Marseille',2,140);
-insert into pilote values (11,'SALIF','toure','rue stalingrad ','France',900,'libreville',3,142);
-insert into pilote values (12,'drissa','cisse','rue valie ','USA',500,'bko',4,143);
-insert into pilote values (13,'cisse','toure','rue mohamed IV ','Mali',5000,'dijon',2,145);
-insert into pilote values (14,'fatim','moi','rue  modibo keita','ALGER',500,'bandiagara',5,145);
-insert into pilote values (15,'kadi','coul','rue alpha','TUNIS',5008,'toulon',6,146);
-insert into pilote values (16,'soufiane','kabad','rue beta ','Mali',600,'kati',7,146);
-insert into pilote values (17,'idriss','sagara','rue askia ','ALGER',300,'vienne',8,147);
-insert into pilote values (18,'yacouba','sagara','rue bu ','Mali',100,'gao',4,148);
-insert into pilote values (19,'addrahamane','ab','rue as be','TUNIS',50,'kidal',5,148);
+insert into pilote values (10,'momo','toure','rue askia modibo','Mali','Marseille');
+insert into pilote values (11,'SALIF','toure','rue stalingrad ','France','libreville');
+insert into pilote values (12,'drissa','cisse','rue valie ','USA','bko');
+insert into pilote values (13,'cisse','toure','rue mohamed IV ','Mali','dijon');
+insert into pilote values (14,'fatim','moi','rue  modibo keita','ALGER','bandiagara');
+insert into pilote values (15,'kadi','coul','rue alpha','TUNIS','toulon');
+insert into pilote values (16,'soufiane','kabad','rue beta ','Mali','kati');
+insert into pilote values (17,'idriss','sagara','rue askia ','ALGER','vienne');
+insert into pilote values (18,'yacouba','sagara','rue bu ','Mali','gao');
+insert into pilote values (19,'addrahamane','ab','rue as be','TUNIS','kidal');
 
-insert into qualification values (1,144,10);
-insert into qualification values (2,144,11);
-insert into qualification values (3,145,12);
-insert into qualification values (4,145,12);
-insert into qualification values (5,146,13);
-insert into qualification values (6,146,13);
-insert into qualification values (7,147,14);
-insert into qualification values (8,147,14);
-insert into qualification values (9,148,15);
+insert into qualificationModelAvion values (1,2,10,30000);
+insert into qualificationModelAvion values (2,3,11,30000);
+insert into qualificationModelAvion values (3,4,12,30000);
+insert into qualificationModelAvion values (4,5,13,30000);
+insert into qualificationModelAvion values (5,6,14,30000);
+insert into qualificationModelAvion values (6,7,15,30000);
+insert into qualificationModelAvion values (7,8,16,30000);
+insert into qualificationModelAvion values (8,9,17,30000);
 
 
-insert into hotesse values (20,'mousou','prpe','Arabe','Français','espagnol','Marseille',500,2,140);
-insert into hotesse values (21,'BATOS','toi','bambara','Français','espagnol','egypte',500,3,141);
-insert into hotesse values (22,'kadi','moi','peul','Français','espagnol','france',500,3,142);
-insert into hotesse values (23,'dene','prpe','dogon','Français','espagnol','renne',500,4,140);
-insert into hotesse values (24,'totuot','il','Arabe','Français','espagnol','lyon',500,4,144);
-insert into hotesse values (25,'mousou','ou','senoufo','Français','espagnol','bko',500,5,145);
-insert into hotesse values (26,'ramos','prpe','Arabe','Français','espagnol','kidal',500,6,146);
-insert into hotesse values (27,'mousou','ellle','marakakan','Français','espagnol','alger',500,7,147);
-insert into hotesse values (28,'cristiano','preepe','Arabe','Français','espagnol','sikasso',5008,8,148);
-insert into hotesse values (29,'ronaldo','sonppa','songhoi','Français','espagnol','mopti',500,8,141);
+
+insert into pilote_Vol values (1,144,10);
+insert into pilote_Vol values (2,144,11);
+insert into pilote_Vol values (3,145,12);
+insert into pilote_Vol values (4,145,12);
+insert into pilote_Vol values (5,146,13);
+insert into pilote_Vol values (6,146,13);
+insert into pilote_Vol values (7,147,14);
+insert into pilote_Vol values (8,147,14);
+insert into pilote_Vol values (9,148,15);
+
+
+insert into hotesse values (20,'mousou','prpe','Arabe','Français','espagnol','Marseille',500);
+insert into hotesse values (21,'BATOS','toi','bambara','Français','espagnol','egypte',500);
+insert into hotesse values (22,'kadi','moi','peul','Français','espagnol','france',500);
+insert into hotesse values (23,'dene','prpe','dogon','Français','espagnol','renne',500);
+insert into hotesse values (24,'totuot','il','Arabe','Français','espagnol','lyon',500);
+insert into hotesse values (25,'mousou','ou','senoufo','Français','espagnol','bko',500);
+insert into hotesse values (26,'ramos','prpe','Arabe','Français','espagnol','kidal',500);
+insert into hotesse values (27,'mousou','ellle','marakakan','Français','espagnol','alger',500);
+insert into hotesse values (28,'cristiano','preepe','Arabe','Français','espagnol','sikasso',5008);
+insert into hotesse values (29,'ronaldo','sonppa','songhoi','Français','espagnol','mopti',5001);
+
+insert into hotesse_Vol values (1,145,20);
+insert into hotesse_Vol values (2,146,21);
+insert into hotesse_Vol values (3,147,22);
+insert into hotesse_Vol values (4,148,23);
+insert into hotesse_Vol values (5,149,24);
+insert into hotesse_Vol values (6,140,25);
+insert into hotesse_Vol values (7,141,26);
+insert into hotesse_Vol values (8,142,27);
+insert into hotesse_Vol values (9,143,28);
+
 
 
 insert into client values (30,'ronaldo','sonppa','139 RUE songhoi','38000','madrid','espagne','500AAZ');

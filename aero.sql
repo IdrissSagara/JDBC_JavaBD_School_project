@@ -1,8 +1,10 @@
 
 DROP TABLE reservation;
 DROP TABLE client;
+DROP TABLE hotesse_Vol;
 DROP TABLE hotesse;
-DROP TABLE qualification;
+DROP TABLE qualificationModelAvion;
+DROP TABLE pilote_Vol;
 DROP TABLE pilote;
 DROP TABLE volpassager;
 DROP TABLE avionpassager;
@@ -65,21 +67,26 @@ CREATE TABLE pilote(
 	prenompersonnelPilote VARCHAR(30),
 	ruepersonnelPilote VARCHAR(30),
 	payspersonnelPilote VARCHAR(30),
-	nbheurepilote INTEGER,
 	localisationActuellePilote VARCHAR(30),
+	CONSTRAINT pk_numpilote PRIMARY KEY (numpilote)
+
+);
+CREATE TABLE qualificationModelAvion(
+	numQualifPilote INTEGER,
 	nummodel INTEGER,
-	numvolpassager INTEGER,
-	CONSTRAINT pk_numpilote PRIMARY KEY (numpilote),
-	CONSTRAINT fk_pilote_modele FOREIGN KEY (nummodel) REFERENCES modele (nummodel),
-	CONSTRAINT fk_personnel_volpassager FOREIGN KEY (numvolpassager) REFERENCES volpassager (numvolpassager)
+	numpilote INTEGER,
+	nbheurepilote INTEGER,
+	CONSTRAINT pk_qualifAvion PRIMARY KEY (numQualifPilote),
+	CONSTRAINT fk_model_qualification FOREIGN KEY (nummodel) REFERENCES modele (nummodel),
+	CONSTRAINT fk_pilote_qualif FOREIGN KEY (numpilote) REFERENCES pilote (numpilote)
 
 );
 
-CREATE TABLE qualification(
-	numQualificationPilote INTEGER,
+CREATE TABLE pilote_Vol(
+	numPiloteVol INTEGER,
 	numvolpassager INTEGER,
 	numpilote INTEGER,
-	CONSTRAINT pk_qualification PRIMARY KEY (numQualificationPilote),
+	CONSTRAINT pk_qualification PRIMARY KEY (numPiloteVol),
 	CONSTRAINT fk_volpassager_qualification FOREIGN KEY (numvolpassager) REFERENCES volpassager (numvolpassager),
 	CONSTRAINT fk_pilote_qualification FOREIGN KEY (numpilote) REFERENCES pilote (numpilote)
 
@@ -94,13 +101,20 @@ CREATE TABLE hotesse(
 	troisiemelangue VARCHAR(30),
 	localisationActuelleHotesse VARCHAR(30),
 	nbheurehotesse INTEGER,
-	nummodel INTEGER,
-	numvolpassager INTEGER,
-	CONSTRAINT pk_numhotesse PRIMARY KEY (numhotesse),
-	CONSTRAINT fk_pilote_model FOREIGN KEY (nummodel) REFERENCES modele (nummodel),
-	CONSTRAINT fk_personnel_volpass FOREIGN KEY (numvolpassager) REFERENCES volpassager (numvolpassager)
+	CONSTRAINT pk_numhotesse PRIMARY KEY (numhotesse)
 
 );
+
+CREATE TABLE hotesse_Vol(
+	numHotess_Vol INTEGER,
+	numvolpassager INTEGER,
+	numhotesse INTEGER,
+	CONSTRAINT pk_hotese_vol PRIMARY KEY (numHotess_Vol),
+	CONSTRAINT fk_vol_hotess_num FOREIGN KEY (numvolpassager) REFERENCES volpassager (numvolpassager),
+	CONSTRAINT fk_vol_hotess_numPil FOREIGN KEY (numhotesse) REFERENCES hotesse (numhotesse)
+
+);
+
 
 CREATE TABLE client(
 	numclient INTEGER not null, 

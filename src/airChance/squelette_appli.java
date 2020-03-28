@@ -1,23 +1,26 @@
 package airChance;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 public class squelette_appli {
-	
-	static final String CONN_URL = "jdbc:oracle:thin:@im2ag-oracle.e.ujf-grenoble.fr:1521:im2ag";
 
-	// Ne pas oublier d'anomymiser le PASSWD avant de rendre votre travail
-	    static final String USER = "sagarai ";
-	    static final String PASSWD = "";
+    static final String CONN_URL = "jdbc:oracle:thin:@im2ag-oracle.e.ujf-grenoble.fr:1521:im2ag";
 
-	    static Connection conn;
+    // Ne pas oublier d'anomymiser le PASSWD avant de rendre votre travail
+    static final String USER = "sagarai ";
+    static final String PASSWD = "Sagara1404";
 
-	    public static void main(String args[]) throws SQLException {
+    static Connection conn;
 
-	        try {
+    public static void main(String args[]) throws SQLException {
 
-	            // Enregistrement du driver Oracle
-	            System.out.print("Loading Oracle driver... ");
-	            DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+        try {
+
+            // Enregistrement du driver Oracle
+            System.out.print("Loading Oracle driver... ");
+            DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
 	            System.out.println("loaded");
 
 	            // Etablissement de la connection

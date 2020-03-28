@@ -9,12 +9,8 @@ public class Hotesse {
 	private String deuxiemeLangue;
 	private String troisiemeLangue;
 	private int nbHeureTotal;
-	private int numModel;
-	private int numVolPassager;
 	private String localisationActuelleHotesse;
-	
-	
-	
+
 	public int getNumHotesse() {
 		return numHotesse;
 	}
@@ -48,33 +44,33 @@ public class Hotesse {
 	public String getTroisiemeLangue() {
 		return troisiemeLangue;
 	}
+
 	public void setTroisiemeLangue(String troisiemeLangue) {
 		this.troisiemeLangue = troisiemeLangue;
 	}
+
 	public int getNbHeureHotesse() {
 		return nbHeureTotal;
 	}
+
 	public void setNbHeureHotesse(int nbHeureHotesse) {
 		this.nbHeureTotal = nbHeureHotesse;
 	}
-	public int getNumModel() {
-		return numModel;
-	}
-	public void setNumModel(int numModel) {
-		this.numModel = numModel;
-	}
-	public int getNumVolPassager() {
-		return numVolPassager;
-	}
-	public void setNumVolPassager(int numVolPassager) {
-		this.numVolPassager = numVolPassager;
-	}
-	
-	public String insertHotesse(int numHotesse, int numVol) {
 
-        String query = "INSERT INTO hotesse values('" + numHotesse + "','" + numVol + "')";
-        return query;
-    }
-
-
+	public Hotesse(int numHotesse, String nomPersonnelHotesse,
+				   String prenomPersonnelHotesse,
+				   String langueMaternelle,
+				   String deuxiemeLangue,
+				   String troisiemeLangue,
+				   int nbHeureTotal,
+				   String localisationActuelleHotesse) {
+		this.numHotesse = numHotesse;
+		this.nomPersonnelHotesse = nomPersonnelHotesse;
+		this.prenomPersonnelHotesse = prenomPersonnelHotesse;
+		this.langueMaternelle = langueMaternelle;
+		this.deuxiemeLangue = deuxiemeLangue;
+		this.troisiemeLangue = troisiemeLangue;
+		this.nbHeureTotal = nbHeureTotal;
+		this.localisationActuelleHotesse = localisationActuelleHotesse;
+	}
 }

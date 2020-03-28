@@ -1,106 +1,99 @@
 package airChance;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
+import dao.HotesseDao;
+import dao.PiloteVolDao;
+import data.Hotesse;
+import data.Pilote;
+import data.VolPassager;
+
+import java.sql.*;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Scanner;
-import data.*;
-import connection.BD_Connection;
 
 public class RequeteAirChance {
 
-	
+
 	/**
-     * Afficher toutes les informations sur tous les spectacles.
-     *
-     * @param conn connexio n � la base de donn � es
-     * @throws SQLException en cas d'erreur d'acc � s � la base de donn � es
-     */
+	 * Afficher toutes les informations sur tous les spectacles.
+	 *
+	 * @param conn connexio n � la base de donn � es
+	 * @throws SQLException en cas d'erreur d'acc � s � la base de donn � es
+	 */
 
 
+	public static void planificationVol(Connection conn) throws SQLException {
+		// Get a statement from the connection
+		Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+		// Execute the query
+		System.out.println("===Planificaiton d'un vol===");
 
-    public static void planificationVol(Connection conn) throws SQLException {
-        Scanner sc = new Scanner(System.in);
-        // Get a statement from the connection
-        Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-        // Execute the query
-        System.out.println("===Planificaiton d'un vol===");
 
-        
-        String origine = DemandeSaisie.saisirString("donner l'aeroport origine: ", 0, 26);
-        String destination = DemandeSaisie.saisirString("donner l'aeroport oridestinationgine: ", 0, 26);
+		String origine = DemandeSaisie.saisirString("donner l'aeroport origine: ", 0, 26);
+		String destination = DemandeSaisie.saisirString("donner l'aeroport destination: ", 0, 26);
 
-        //recherche des avion disponibles
-        ResultSet rs = stmt.executeQuery("select a.numavionpassager, nummodel from avionpassager a where a.numavionpassager NOT IN (select v.numavionpassager from volpassager v)");
-        while (rs.next()) {
-            System.out.print("  Num Avion : " + rs.getInt(1) + " ");
-            System.out.println("  Num Modele : " + rs.getInt(2) + " ");
-        }
+		//recherche des avion disponibles
+		ResultSet rs = stmt.executeQuery("select a.numavionpassager, nummodel from avionpassager a where a.numavionpassager NOT IN (select v.numavionpassager from volpassager v)");
+		while (rs.next()) {
+			System.out.print("  Num Avion : " + rs.getInt(1) + " ");
+			System.out.println("  Num Modele : " + rs.getInt(2) + " ");
+		}
 
-        rs = stmt.executeQuery("select v.numavionpassager, max(v.datedepart) from avionpassager a \n"
-                + "join volpassager v on v.numavionpassager = a.numavionpassager \n"
-                + "group by a.numavionpassager\n"
-                + "order by 1");
+		rs = stmt.executeQuery("select v.numavionpassager, max(v.datedepart) from avionpassager a \n"
+				+ "join volpassager v on v.numavionpassager = a.numavionpassager \n"
+				+ "group by a.numavionpassager\n"
+				+ "order by 1");
 
-        List<VolPassager> listVolPassager = new ArrayList<VolPassager>();
+		List<VolPassager> listVolPassager = new ArrayList<VolPassager>();
 
-        while (rs.next()) {
-            VolPassager vp = new VolPassager();
-            vp.setNumAvionPassager(rs.getInt(1));
-            vp.setDate(rs.getDate(2));
-            
-            listVolPassager.add(vp);
+		while (rs.next()) {
+			VolPassager vp = new VolPassager();
+			vp.setNumAvionPassager(rs.getInt(1));
+			vp.setDate(rs.getDate(2));
 
-        }
-        for (int y = 0; y < listVolPassager.size(); y++) {
-            VolPassager vp2 = listVolPassager.get(y);
-            SimpleDateFormat formater = null;
-            formater = new SimpleDateFormat("yyyy/mm/dd");
+			listVolPassager.add(vp);
 
-            ResultSet rs2 = stmt.executeQuery("select distinct v.numavionpassager, av.nummodel from volpassager v join avionpassager av on av.numavionpassager = v.numavionpassager  where v.numavionpassager = " + vp2.getNumAvionPassager());
-            while (rs2.next()) {
+		}
+		for (int y = 0; y < listVolPassager.size(); y++) {
+			VolPassager vp2 = listVolPassager.get(y);
 
-                if (rs2.getInt(2) == 1) {
-                    System.out.print("  Num Avion : " + rs2.getInt(1) + " ");
-                    System.out.println("  Num Modele : " + rs2.getInt(3) + " ");
-                }
-            }
-        }
+			ResultSet rs2 = stmt.executeQuery("select distinct v.numavionpassager, av.nummodel from volpassager v join avionpassager av on av.numavionpassager = v.numavionpassager  where v.numavionpassager = " + vp2.getNumAvionPassager());
+			while (rs2.next()) {
 
-        
-        for (VolPassager vp: listVolPassager) {
-        	System.out.println(vp.getNumAvionPassager());
-        	System.out.println(vp.getNumeroVolPassager());
-        }
+				if (rs2.getInt(2) == 1) {
+					System.out.print("  Num Avion : " + rs2.getInt(1) + " ");
+					System.out.println("  Num Modele : " + rs2.getInt(3) + " ");
+				}
+			}
+		}
 
-        //int numAvion = LectureClavier.lireEntier("Choisir le numéro de l'avion du vol");
-        int numAvion = DemandeSaisie.saisirInt("Choisir le numéro de l'avion du vol", 0, listVolPassager.get(listVolPassager.size() - 1).getNumAvionPassager());
 
-        rs = stmt.executeQuery("select max(numvolpassager) from volpassager");
-        int numVol = 0;
-        while (rs.next()) {
-            numVol = rs.getInt(1);
-        }
+		System.out.println("Liste des avions disponibles");
+		for (VolPassager vp : listVolPassager) {
+			System.out.print(vp.getNumAvionPassager() + "\t");
+			System.out.println(vp.getNumeroVolPassager());
+		}
 
-        numVol++;
-        
-        // demander toutes les infos necessaires à enreg un vol
-        /*insertVol(Connection conn, int numVol, String origine, String destination, int numAvion, 
+		//int numAvion = LectureClavier.lireEntier("Choisir le numéro de l'avion du vol");
+		int numAvion = DemandeSaisie.saisirInt("Choisir le numéro de l'avion du vol", 0, listVolPassager.get(listVolPassager.size() - 1).getNumAvionPassager());
+
+		rs = stmt.executeQuery("select max(numvolpassager) from volpassager");
+		int numVol = 0;
+		while (rs.next()) {
+			numVol = rs.getInt(1);
+		}
+
+		numVol++;
+
+		// demander toutes les infos necessaires à enreg un vol
+		/*insertVol(Connection conn, int numVol, String origine, String destination, int numAvion, 
         		Timestamp dateDepart, int dureeVol, int distanceVol, int nbrPlaceEco, int nbrPlaceAff, int nbrPlacePre)*/
-        int dureeVol = DemandeSaisie.saisirInt("Saisissez la duree du vol", 0, 10000);
-        int distanceVol = DemandeSaisie.saisirInt("Saisissez la distance du vol", 0, 200000);
-        int nbrPlaceAff = DemandeSaisie.saisirInt("Saisissez le nombre de place affaires disponibles", 0, 200);
-        int nbrPlaceEco = DemandeSaisie.saisirInt("Saisissez le nombre de place economique disponibles", 0, 200);
-        int nbrPlacePre = DemandeSaisie.saisirInt("Saisissez le nombre de place en première disponibles", 0, 200);
-        Timestamp dateDepart;
+		int dureeVol = DemandeSaisie.saisirInt("Saisissez la duree du vol", 0, 10000);
+		int distanceVol = DemandeSaisie.saisirInt("Saisissez la distance du vol", 0, 200000);
+		int nbrPlaceAff = DemandeSaisie.saisirInt("Saisissez le nombre de place affaires disponibles", 0, 200);
+		int nbrPlaceEco = DemandeSaisie.saisirInt("Saisissez le nombre de place economique disponibles", 0, 200);
+		int nbrPlacePre = DemandeSaisie.saisirInt("Saisissez le nombre de place en première disponibles", 0, 200);
+		Timestamp dateDepart;
 		try {
 			dateDepart = DemandeSaisie.saisirDateTimestamp("Saisissez la date de depart", 2020, 2023);
 		} catch (ParseException e) {
@@ -109,83 +102,80 @@ public class RequeteAirChance {
 			dateDepart = new Timestamp(System.currentTimeMillis());
 		}
 
-        VolPassager.insertVol(conn, numVol, origine, destination, numAvion, dateDepart, dureeVol, distanceVol, nbrPlaceEco, nbrPlaceAff, nbrPlacePre);
+		//Creation de vol
+		VolPassager.insertVol(conn, numVol, origine, destination, numAvion, dateDepart, dureeVol, distanceVol, nbrPlaceEco, nbrPlaceAff, nbrPlacePre);
 
-        System.out.println("\nA ce stade, nous avons crée notre vol avec les informations suivantes : Aeroport Origine, Aeroport Destination ....\n\nNous allons désormais affecter du personnel à ce vol");
+		System.out.println("\nA ce stade, nous avons crée notre vol avec les informations suivantes : Aeroport Origine, Aeroport Destination ....\n\nNous allons désormais affecter du personnel à ce vol");
 
-        System.out.println("===========================\n===========================\n===========================\nA partir d'ici nous allons gérer l'aspect concurentiel\n===========================\n===========================\n===========================\n");
+		System.out.println("===========================\n===========================\n===========================\nA partir d'ici nous allons gérer l'aspect concurentiel\n===========================\n===========================\n===========================\n");
 
-        rs = stmt.executeQuery("select p.numpilote, nompersonnelPilote FROM VOLPASSAGER NATURAL JOIN PILOTE NATURAL JOIN AVIONPASSAGER where numavion");
-        //SELECT * FROM VOLPASSAGER NATURAL JOIN PILOTE NATURAL JOIN AVIONPASSAGER
+		rs = Pilote.getPiloteQualifierVol(conn, numVol);
 
-        while (rs.next()) {
-            System.out.print("  Num Pilote : " + rs.getInt(1) + " ");
-            System.out.println("  Nom Pilote : " + rs.getString(2) + " ");
-        }
+		System.out.println("Les pilotes qualifiés pour le vol " + numVol);
+		int maxIdPil = 0;
+		while (rs.next()) {
+			int idPil = rs.getInt(1);
+			if (idPil > maxIdPil) maxIdPil = idPil;
+			System.out.print(idPil + "\t");
+			System.out.print(rs.getString(2) + "\t");
+			System.out.println(rs.getString(2));
+		}
 
-        rs = stmt.executeQuery("select p.numpilote, p.nompersonnelPilote , max(v.datedepart) from pilote p \n"
-                + "join volpassager v on v.numvolpassager = p.numVolPassager\n"
-                + "group by p.numpilote, p.nompersonnel");
+		int numPil = DemandeSaisie.saisirInt("Saisissez le numéro du pilote", 0, maxIdPil);
 
-        while (rs.next()) {
-            System.out.print("  Num Pilote : " + rs.getInt(1) + " ");
-            System.out.println("  Nom Pilote : " + rs.getString(2) + " ");
-        }
+		//insert valeur dans pilote_vol
+		PiloteVolDao piloteVolDao = PiloteVolDao.getInstance(conn);
+		int insertedId = -1;
+		try {
+			insertedId = piloteVolDao.insert(numPil, numVol);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
-        int numPilote = LectureClavier.lireEntier("Choisir le pilote à affecter à ce vol");
+		if (insertedId == -1) {
+			System.out.println("Une erreur fatale s'est produite lors de l'insertion du pilote_vol");
+			return;
+		}
 
-        rs = stmt.executeQuery("select h.numhotesse, nompersonnel from Hotesse");
+		//afficcher les hotesses
+		System.out.println("Liste des hostesses disponibles");
+		HotesseDao hotesseDao = HotesseDao.getInstance(conn);
+		List<Hotesse> hl = null;
+		try {
+			hl = hotesseDao.getAll();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
-        while (rs.next()) {
-            System.out.print("  Num Hotesse : " + rs.getInt(1) + " ");
-            System.out.println("  Nom Hotesse : " + rs.getString(2) + " ");
-        }
+		if (hl == null) {
+			System.out.println("Une erreur fatale s'est produite lors de la recuperation des hotesses");
+			return;
+		}
 
-        rs = stmt.executeQuery("select h.numhotesse, h.nompersonnelHotesse, max(v.datedepart) from volpassager v \n"
-                + "join volpassager v on v.numVolPassager = hp.numVolPassager\n"
-                + "group by h.numhotesse, h.nompersonnel");
-        while (rs.next()) {
-            System.out.print("  Num Hotesse : " + rs.getInt(1) + " ");
-            System.out.println("  Nom Hotesse : " + rs.getString(2) + " ");
-        }
-        int numHotesse = LectureClavier.lireEntier("Choisir l'hotesse à affecter à ce vol");
+		int minId = hl.get(0).getNumHotesse(), maxId = 0;
 
-        Pilote p = new Pilote();
-        stmt.executeUpdate(p.insertPilote(numPilote, numVol));
+		for (Hotesse h : hl) {
+			if (h.getNumHotesse() > maxId) maxId = h.getNumHotesse();
+			if (h.getNumHotesse() < minId) minId = h.getNumHotesse();
+			System.out.println(h.getNumHotesse() + " - " + h.getPrenomPersonnelHotesse() + " " + h.getNomPersonnelHotesse());
+		}
 
-        Hotesse h = new Hotesse();
-        stmt.executeUpdate(h.insertHotesse(numHotesse, numVol));
+		HotesseVolDao hotesseVolDao = HotesseVolDao.getInstance(conn);
 
-        System.out.println("Le vol crée est le suivant :");
-        rs = stmt.executeQuery("select aeroportorigine, aeroportdestination, numavionpassager from volpassager where numvolpassager = " + numVol);
-        while (rs.next()) {
-            System.out.println("  Aeroport Destination : " + rs.getString(1) + " ");
-            System.out.println("  Aeroport Origine : " + rs.getString(2) + " ");
-            System.out.println("  Numero Avion : " + rs.getInt(3) + " ");
-        }
+		System.out.println("Saisissez 3 hotesses");
+		for (int i = 0; i < 3; i++) {
+			int numHotesse = DemandeSaisie.saisirInt("Saisissez le numéro de l'hotesse n°" + i + 1, minId, maxId);
+			int res = hotesseVolDao.insert(numVol, numHotesse);
 
-        System.out.println("Le personnel de ce vol est : ");
-        rs = stmt.executeQuery("select numpilote from pilote where numvolpassager = " + numVol);
-        while (rs.next()) {
-            System.out.println("  Numéro Pilote : " + rs.getInt(1) + " ");
-        }
+			if (res == -1) {
+				return;
+			}
+		}
 
-        rs = stmt.executeQuery("select numhotesse from hotesse where numvolpassager = " + numVol);
-        while (rs.next()) {
-            System.out.println("  Numéro Hotesse : " + rs.getInt(1) + " ");
-        }
+		System.out.println("Résumé de la planification du vol");
 
-        rs = stmt.executeQuery("Select numpilote, nompersonnel, localisationActuel from pilote where numpilote = " + numPilote);
-
-        while (rs.next()) {
-            System.out.print("NumPilote : " + rs.getInt(1) + " ");
-            System.out.println("Nom Personnel : " + rs.getString(2) + " ");
-            System.out.println("Localisation Actuelle : " + rs.getString(3) + " ");
-        }
-
-        // Close the result set, statement and the connection 
-        rs.close();
-        stmt.close();
-    }
+		rs.close();
+		stmt.close();
+	}
 
 }

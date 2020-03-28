@@ -5,10 +5,8 @@
  */
 package connection;
 
-import java.beans.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
@@ -16,7 +14,7 @@ public class BD_Connection {
 
     private static Connection conn;
     private static String USER = "sagarai";
-    private static String PASSWD = "";
+    private static String PASSWD = "Sagara1404";
 
     // static final String CONN_URL = "jdbc:oracle:thin:@im2ag-oracle.e.ujf-grenoble.fr:1521:im2ag";
     public BD_Connection() throws SQLException {
