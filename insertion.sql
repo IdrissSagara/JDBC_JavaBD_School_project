@@ -48,15 +48,33 @@ insert into pilote values (16,'soufiane','kabad','rue beta ','Mali','kati');
 insert into pilote values (17,'idriss','sagara','rue askia ','ALGER','vienne');
 insert into pilote values (18,'yacouba','sagara','rue bu ','Mali','gao');
 insert into pilote values (19,'addrahamane','ab','rue as be','TUNIS','kidal');
+insert into pilote values (20,'SI','POU','rue askia modibo','Mali','Marseille');
+insert into pilote values (21,'SAG','toZSSQure','rue stalingrad ','France','libreville');
+insert into pilote values (22,'QO','cisseSQS','rue valie ','USA','bko');
+insert into pilote values (23,'AA','toureQQSQ','rue mohamed IV ','Mali','dijon');
+insert into pilote values (24,'ZZ','moiSQS','rue  modibo keita','ALGER','bandiagara');
+insert into pilote values (25,'EE','coulSQS','rue alpha','TUNIS','toulon');
+insert into pilote values (26,'RR','kabadQSQ','rue beta ','Mali','kati');
+insert into pilote values (27,'TT','sagaraSXD','rue askia ','ALGER','vienne');
+insert into pilote values (28,'YY','sagaraQSQS','rue bu ','Mali','gao');
+insert into pilote values (29,'UU','abSQS','rue as be','TUNIS','kidal');
 
 insert into qualificationModelAvion values (1,2,10,30000);
-insert into qualificationModelAvion values (2,3,11,30000);
-insert into qualificationModelAvion values (3,4,12,30000);
-insert into qualificationModelAvion values (4,5,13,30000);
-insert into qualificationModelAvion values (5,6,14,30000);
-insert into qualificationModelAvion values (6,7,15,30000);
-insert into qualificationModelAvion values (7,8,16,30000);
-insert into qualificationModelAvion values (8,9,17,30000);
+insert into qualificationModelAvion values (2,3,11,40000);
+insert into qualificationModelAvion values (3,4,12,50000);
+insert into qualificationModelAvion values (4,5,13,70000);
+insert into qualificationModelAvion values (5,6,14,350000);
+insert into qualificationModelAvion values (6,7,15,50000);
+insert into qualificationModelAvion values (7,8,16,70000);
+insert into qualificationModelAvion values (8,9,17,80000);
+insert into qualificationModelAvion values (100,2,20,30000);
+insert into qualificationModelAvion values (200,3,21,30000);
+insert into qualificationModelAvion values (300,4,22,30000);
+insert into qualificationModelAvion values (400,5,23,30000);
+insert into qualificationModelAvion values (500,6,24,30000);
+insert into qualificationModelAvion values (600,7,25,30000);
+insert into qualificationModelAvion values (700,8,26,30000);
+insert into qualificationModelAvion values (800,9,27,30000);
 
 
 

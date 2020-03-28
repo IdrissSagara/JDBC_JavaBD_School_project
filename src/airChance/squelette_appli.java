@@ -70,11 +70,11 @@ public class squelette_appli {
 	            switch (choix) {
 					case 1:
 						System.out.println("******************************");
-						RequeteAirChance.planificationVol(conn);
+						PlanificationVolAirChance.planificationVol(conn);
 						break;
 					case 2:
 						System.out.println("******************************");
-						RequeteAirChance.updatePilote(conn);
+						PlanificationVolAirChance.updatePilote(conn);
 						break;
 					case 3:
 						System.out.println("******************************");
