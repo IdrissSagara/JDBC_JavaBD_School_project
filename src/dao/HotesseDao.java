@@ -2,10 +2,7 @@ package dao;
 
 import data.Hotesse;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +25,20 @@ public class HotesseDao {
         String query = "select * from hotesse";
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery(query);
+
+        return makeHotesseList(rs);
+    }
+
+    public List<Hotesse> getHotessByNumVol(int numeroVol) throws SQLException {
+        String query = "Select NUMHOTESSE, NOMPERSONNELHOTESSE, PRENOMPERSONNELHOTESSE," +
+                "LANGUEMATERNELLE,DEUXIEMELANGUE,TROISIEMELANGUE," +
+                " LOCALISATIONACTUELLEHOTESSE, NBHEUREHOTESSE from HOTESSE_VOL NATURAL JOIN HOTESSE where NUMVOLPASSAGER = ?";
+        ResultSet rs = null;
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.setInt(1, numeroVol);
+
+        ps.executeQuery();
+        rs = ps.getResultSet();
 
         return makeHotesseList(rs);
     }
@@ -70,12 +81,34 @@ public class HotesseDao {
     private List<Hotesse> makeHotesseList(ResultSet rs) throws SQLException {
         List<Hotesse> hl = new ArrayList<>();
         Hotesse h = null;
-
         while (rs.next()) {
             h = mapResultSetToHotesse(rs);
             hl.add(h);
         }
         return hl;
+    }
+
+    public void updateUsingProcedure(String nomPersonnelHotesse,
+                                     String prenomPersonnelHotesse,
+                                     String langueMaternelle,
+                                     String deuxiemeLangue,
+                                     String troisiemeLangue,
+                                     String localisationActuelleHotesse,
+                                     int nbHeureHotesse,
+                                     int numHotesse) throws SQLException {
+        String pNameHotesse = "{ call updateHotesse(?, ?, ?, ?, ?, ?,?,?) }";
+        CallableStatement cstmt = conn.prepareCall(pNameHotesse);
+        int i = 1;
+        cstmt.setString(i++, nomPersonnelHotesse);
+        cstmt.setString(i++, prenomPersonnelHotesse);
+        cstmt.setString(i++, langueMaternelle);
+        cstmt.setString(i++, deuxiemeLangue);
+        cstmt.setString(i++, troisiemeLangue);
+        cstmt.setString(i++, localisationActuelleHotesse);
+        cstmt.setInt(i++, nbHeureHotesse);
+        cstmt.setInt(i++, numHotesse);
+
+        cstmt.executeUpdate();
     }
 
 }

@@ -230,7 +230,7 @@ public class PlanificationVolAirChance {
         }
 
         int choix = DemandeSaisie.saisirInt("\nChoisir le numero de vol à modifier dans la liste proposer en haut. \n", 1, listVolPassager.size() + 1);
-        int numVol = listVolPassager.get(choix).getNumeroVolPassager();
+        int numVol = listVolPassager.get(choix - 1).getNumeroVolPassager();
 
         int dureeVol = DemandeSaisie.saisirInt("Saisissez la duree du vol (Limite fixeé entre 0 et 1000000)", 0, 1000000);
         int distanceVol = DemandeSaisie.saisirInt("Saisissez la distance du vol (Limite fixeé entre 0 et 200000) ", 0, 200000);
@@ -239,7 +239,7 @@ public class PlanificationVolAirChance {
         int nbrPlaceAff = DemandeSaisie.saisirInt("Saisissez le nombre de place affaires disponibles (Limite fixeé entre 0 et 500) ", 0, 500);
         int nbrPlaceEco = DemandeSaisie.saisirInt("Saisissez le nombre de place economiques disponibles (Limite fixeé entre 0 et 500)", 0, 500);
         int nbrPlacePre = DemandeSaisie.saisirInt("Saisissez le nombre de place en première disponibles (Limite fixeé entre 0 et 500)", 0, 500);
-        int numeroAvion = DemandeSaisie.saisirInt("Saisissez ici le numero de l'avion dans la liste proposer en haut ", 0, 1002999);
+        int numeroAvion = DemandeSaisie.saisirInt("Saisissez ici le numero de l'Avion dans la liste proposer en haut ", 0, 1002999);
         Timestamp dateDepart;
         try {
             dateDepart = DemandeSaisie.saisirDateTimestamp("Saisissez la date de depart (Année limitée entre 2020 et 2025 )", 2020, 2025);
@@ -252,8 +252,8 @@ public class PlanificationVolAirChance {
             volDao.updateUsingVolProcedure(dateDepart, dureeVol, distanceVol, origine,
                     destination, nbrPlaceEco, nbrPlaceAff, nbrPlacePre, numeroAvion, numVol);
 
-            System.out.println("---------------Recapitulatif du vol modifié---------------\n");
-            System.out.println("Le vol n°: " + numVol + "a été modifié avec succes avec les valeurs suivantes: ");
+            System.out.println("---------------Recapitulatif du VOL modifié---------------\n");
+            System.out.println("Le vol n°: " + numVol + " a été modifié avec succes avec les valeurs suivantes: ");
             System.out.println("Duree de vol: " + dureeVol);
             System.out.println("Distance de vol: " + distanceVol);
             System.out.println("Aeroport origin: " + origine);
@@ -262,50 +262,108 @@ public class PlanificationVolAirChance {
             System.out.println("Nombre de place Affaire: " + nbrPlaceAff);
             System.out.println("Nombre de place Premiere: " + nbrPlacePre);
             System.out.println("Numero Avion attribué au vol: " + numeroAvion);
-            System.out.println("\n---------------Fin Recapitulatif---------------\n");
+            System.out.println("\n---------------------------------------");
+
+            // Nous allons modifier le pilote du vol
+
+            System.out.println("\nNous allons prendre en compte la modification des pilotes associé au vol n°: " + numVol);
+
+            PiloteDao piloteDao = PiloteDao.getInstance(conn);
+            List<Pilote> piloteList = new ArrayList<>();
+
+            if (piloteList.size() != 0) {
+
+                try {
+                    piloteList = piloteDao.getPiloteByNumVol(numVol);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                int indexP = 1;
+                for (Pilote p : piloteList) {
+                    System.out.println(indexP++ + " - " + p.getPrenomPersonnelPilote() + " " + p.getNomPersonnelPilote() + " ");
+                }
+                System.out.println("\n" + piloteList.size() + " Pilote à été trouvé \n");
+
+                int choixP = DemandeSaisie.saisirInt("Saisissez le numéro du pilote pour le modifier", 1, piloteList.size() + 1);
+                int numPilote = piloteList.get(choixP - 1).getNumPilote();
+
+                String nomPersonnelPilote = DemandeSaisie.saisirString("Saisir nom pilote", 0, 30);
+                String prenomPersonnelPilote = DemandeSaisie.saisirString("Saisir prenom pilote", 0, 30);
+                String ruePersonnelPilote = DemandeSaisie.saisirString("Saisir l'adresse du pilote", 0, 30);
+                String paysPersonnelPilote = DemandeSaisie.saisirString("Saisir pays pilote", 0, 30);
+                String localisationActuellePilote = DemandeSaisie.saisirString("Saisir localisation actuelle pilote", 0, 30);
+
+                try {
+                    piloteDao.updateUsingProcedure(nomPersonnelPilote,
+                            prenomPersonnelPilote, ruePersonnelPilote,
+                            paysPersonnelPilote, localisationActuellePilote, numPilote);
+
+                    System.out.println("---------------Recapitulatif du PILOTE modifié---------------\n");
+                    System.out.println("Le pilote n°" + numPilote + " a été modifié avec les valeurs suivantes: ");
+                    System.out.println("Nom: " + nomPersonnelPilote);
+                    System.out.println("Prenom: " + prenomPersonnelPilote);
+                    System.out.println("Rue: " + ruePersonnelPilote);
+                    System.out.println("Pays: " + paysPersonnelPilote);
+                    System.out.println("Localisation: " + localisationActuellePilote);
+                    System.out.println("\n---------------------------------------");
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                System.out.println(piloteList.size() + " Pilote trouvé pour le vol: " + numVol);
+            }
+
+
+            System.out.println("\nNous allons aussi prendre en compte la modification des hotesses associé au vol n°: " + numVol);
+
+            HotesseDao hotesseDao = HotesseDao.getInstance(conn);
+            List<Hotesse> hotesseList = new ArrayList<>();
+
+            try {
+                hotesseList = hotesseDao.getHotessByNumVol(numVol);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            int indexH = 1;
+            for (Hotesse h : hotesseList) {
+                System.out.println(indexH++ + " - " + h.getPrenomPersonnelHotesse() + " " + h.getNomPersonnelHotesse());
+            }
+            System.out.println("\n" + hotesseList.size() + " Hotesse à été trouvé \n");
+
+            int choixH = DemandeSaisie.saisirInt("Saisissez le numéro de l'hotesse pour le modifier", 0, hotesseList.size() + 1);
+            int numHotesse = hotesseList.get(choixH - 1).getNumHotesse();
+
+            String nomPersonnelHotesse = DemandeSaisie.saisirString("Saisir nom Hotesse", 0, 30);
+            String prenomPersonnelHotesse = DemandeSaisie.saisirString("Saisir prenom Hotesse", 0, 30);
+            String langueMaternelle = DemandeSaisie.saisirString("Saisir la langue maternelle de l'hotesse", 0, 30);
+            String deuxiemeLangue = DemandeSaisie.saisirString("Saisir la 2 eme langue de l'hotesse", 0, 30);
+            String troisiemeLangue = DemandeSaisie.saisirString("Saisir la 3 eme langue de l'hotesse", 0, 30);
+            String localisationActuelleHotesse = DemandeSaisie.saisirString("Saisir la localisation actuelle de l'hotesse", 0, 70);
+            int nbHeureTotal = DemandeSaisie.saisirInt("Nombre d'heure effectuer", 0, 2000);
+
+            try {
+                hotesseDao.updateUsingProcedure(nomPersonnelHotesse, prenomPersonnelHotesse, langueMaternelle, deuxiemeLangue, troisiemeLangue,
+                        localisationActuelleHotesse, nbHeureTotal, numHotesse);
+
+                System.out.println("---------------Recapitulatif de l'hotesse modifié---------------\n");
+                System.out.println("L'Hotesse n°" + numHotesse + " a été modifié avec les valeurs suivantes: ");
+                System.out.println("Nom: " + nomPersonnelHotesse);
+                System.out.println("Prenom: " + prenomPersonnelHotesse);
+                System.out.println("Langue Maternelle: " + langueMaternelle);
+                System.out.println("Deuxieme Langue: " + deuxiemeLangue);
+                System.out.println("Troisieme Langue: " + troisiemeLangue);
+                System.out.println("La localisation actuel de l'hotesse: " + localisationActuelleHotesse);
+                System.out.println("Nombre d'heures total de l'hotesse: " + nbHeureTotal);
+                System.out.println("\n---------------------------------------");
+                System.out.println("\n---------------------------------------");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-    }
-
-
-    public static void updatePilote(Connection conn) {
-        PiloteDao piloteDao = PiloteDao.getInstance(conn);
-        List<Pilote> piloteList = new ArrayList<>();
-        try {
-            piloteList = piloteDao.getAll();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        int index = 1;
-        for (Pilote p : piloteList) {
-            System.out.println(index++ + " - " + p.getPrenomPersonnelPilote() + " " + p.getNomPersonnelPilote());
-        }
-
-        int choix = DemandeSaisie.saisirInt("Saisir le numéro du pilote", 1, piloteList.size());
-        int numPilote = piloteList.get(choix).getNumPilote();
-
-        String nomPersonnelPilote = DemandeSaisie.saisirString("Saisir nom pilote", 0, 30);
-        String prenomPersonnelPilote = DemandeSaisie.saisirString("Saisir prenom pilote", 0, 30);
-        String ruePersonnelPilote = DemandeSaisie.saisirString("Saisir rue pilote", 0, 30);
-        String paysPersonnelPilote = DemandeSaisie.saisirString("Saisir pays pilote", 0, 30);
-        String localisationActuellePilote = DemandeSaisie.saisirString("Saisir localisation actuelle pilote", 0, 30);
-
-        try {
-            piloteDao.updateUsingProcedure(nomPersonnelPilote,
-                    prenomPersonnelPilote, ruePersonnelPilote,
-                    paysPersonnelPilote, localisationActuellePilote, numPilote);
-
-            System.out.println("Le pilote n°" + numPilote + " a été modifié avec les valeurs suivantes: ");
-            System.out.println("Nom: " + nomPersonnelPilote);
-            System.out.println("Prenom: " + prenomPersonnelPilote);
-            System.out.println("Rue: " + ruePersonnelPilote);
-            System.out.println("Pays: " + paysPersonnelPilote);
-            System.out.println("Localisation: " + localisationActuellePilote);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 }

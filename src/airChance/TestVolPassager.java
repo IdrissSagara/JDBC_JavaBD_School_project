@@ -2,10 +2,12 @@ package airChance;
 
 import connection.BD_Connection;
 import dao.HotesseDao;
-import dao.ModelDao;
+import data.Hotesse;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TestVolPassager {
 
@@ -30,7 +32,7 @@ public class TestVolPassager {
 			}
 		}*/
 
-		HotesseDao hotesseDao = HotesseDao.getInstance(conn);
+		//HotesseDao hotesseDao = HotesseDao.getInstance(conn);
 		/*try {
 			List<Hotesse> hl = hotesseDao.getAll();
 			for (Hotesse h: hl) {
@@ -54,13 +56,46 @@ public class TestVolPassager {
 			}
 		}*/
 
-		ModelDao modelDao = ModelDao.getInstance(conn);
+
+
+
+/*		PiloteDao piloteDao = PiloteDao.getInstance(conn);
+		List<Pilote> piloteList = new ArrayList<>();
+
 		try {
-			int nb = modelDao.getNombrePiloteNecessaire(152);
-			System.out.println("nb necessaire " + nb);
+			piloteList =  piloteDao.getPiloteByNumVol(144);
+			System.out.println("size " + piloteList.size());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		int indexP = 1;
+		for (Pilote p : piloteList) {
+			System.out.println(indexP++ + " - " + p.getPrenomPersonnelPilote() + " " + p.getNomPersonnelPilote());
+		}
+	}*/
+		HotesseDao hotesseDao = HotesseDao.getInstance(conn);
+		List<Hotesse> hotesseList = new ArrayList<>();
+
+		try {
+			hotesseList = hotesseDao.getHotessByNumVol(145);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		int index = 1;
+		for (Hotesse h : hotesseList) {
+			System.out.println(index++ + " - " + h.getPrenomPersonnelHotesse() + " " + h.getNomPersonnelHotesse());
+		}
+
+		int indexH = DemandeSaisie.saisirInt("Saisissez le numéro de l'hotesse pour le modifier", 1, hotesseList.size());
+		int numHotesse = hotesseList.get(indexH - 1).getNumHotesse();
+		System.out.println("num hotesse" + numHotesse);
 	}
 
 }

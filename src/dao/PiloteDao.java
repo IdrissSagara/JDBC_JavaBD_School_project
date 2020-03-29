@@ -22,6 +22,7 @@ public class PiloteDao {
         return piloteDao;
     }
 
+
     public List<Pilote> getAll() throws SQLException {
         String query = "select * from PILOTE";
         Statement stmt = conn.createStatement();
@@ -30,22 +31,25 @@ public class PiloteDao {
         return makePiloteList(rs);
     }
 
-    public Pilote getById(int numpilote) throws SQLException {
-        String query = "Select * from pilote where NUMPILOTE = ?";
+
+    public List<Pilote> getPiloteByNumVol(int numeroVol) throws SQLException {
+        String query = "Select NUMPILOTE, NOMPERSONNELPILOTE, PRENOMPERSONNELPILOTE, RUEPERSONNELPILOTE," +
+                "PAYSPERSONNELPILOTE,LOCALISATIONACTUELLEPILOTE " +
+                "from PILOTE_VOL NATURAL JOIN PILOTE where NUMVOLPASSAGER = ?";
         ResultSet rs = null;
         PreparedStatement ps = conn.prepareStatement(query);
-        ps.setInt(1, numpilote);
+        ps.setInt(1, numeroVol);
 
         ps.executeQuery();
         rs = ps.getResultSet();
 
-        return mapResultSetToPilote(rs);
+        return makePiloteList(rs);
     }
 
     private Pilote mapResultSetToPilote(ResultSet rs) throws SQLException {
         Pilote p = null;
 
-        if (rs.next()) {
+        if (rs != null) {
             int i = 1;
             int numPilote = rs.getInt(i++);
             String nomPersonnelPilote = rs.getString(i++);

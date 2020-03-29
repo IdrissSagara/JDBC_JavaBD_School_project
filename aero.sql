@@ -1,15 +1,15 @@
 
-DROP TABLE reservation;
-DROP TABLE client;
-DROP TABLE hotesse_Vol;
-DROP TABLE hotesse;
-DROP TABLE qualificationModelAvion;
-DROP TABLE pilote_Vol;
-DROP TABLE pilote;
-DROP TABLE volpassager;
-DROP TABLE avionpassager;
-DROP TABLE place;
-DROP TABLE modele;
+drop table reservation;
+drop table client;
+drop table hotesse_Vol;
+drop table hotesse;
+drop table qualificationModelAvion;
+drop table pilote_Vol;
+drop table pilote;
+drop table volpassager;
+drop table avionpassager;
+drop table place;
+drop table modele;
 
 drop sequence HOT_VOL;
 drop sequence PILVOL_SEQ;
@@ -18,14 +18,14 @@ drop sequence PILVOL_SEQ;
 /**
 alter session set NLS_DATE_FORMAT='yyyy-mm-dd';
 */
-CREATE TABLE modele(
+create TABLE modele(
 	nummodel INTEGER not null,
 	nbpiloteneccessaire INTEGER,
 	rayonaction INTEGER,
 	CONSTRAINT pk_nummodel PRIMARY KEY (nummodel)
 );
 
-CREATE TABLE avionpassager(
+create TABLE avionpassager(
 	numavionpassager INTEGER not null,
 	nombreplaceeco INTEGER,
 	nombreplaceaffaire INTEGER,
@@ -35,7 +35,7 @@ CREATE TABLE avionpassager(
 	CONSTRAINT fk_avionpassager_modele FOREIGN KEY (nummodel) REFERENCES modele (nummodel)
 );
 
-CREATE TABLE place(
+create TABLE place(
 	numplace INTEGER not null,
 	position VARCHAR(30),
 	typeclasse VARCHAR(30),
@@ -48,7 +48,7 @@ CREATE TABLE place(
 	CONSTRAINT fk_place_modele FOREIGN KEY (nummodel) REFERENCES modele (nummodel)
 );
 
-CREATE TABLE volpassager(
+create TABLE volpassager(
 	numvolpassager INTEGER not null,
 	dateEnregistrementVol DATE,
 	datedepart TIMESTAMP,
@@ -64,7 +64,7 @@ CREATE TABLE volpassager(
 	CONSTRAINT fk_volpassager_avionpassager FOREIGN KEY (numavionpassager) REFERENCES avionpassager (numavionpassager)
 );
 
-CREATE TABLE pilote(
+create TABLE pilote(
 	numpilote INTEGER not null,
 	nompersonnelPilote VARCHAR(30),
 	prenompersonnelPilote VARCHAR(30),
@@ -74,7 +74,7 @@ CREATE TABLE pilote(
 	CONSTRAINT pk_numpilote PRIMARY KEY (numpilote)
 
 );
-CREATE TABLE qualificationModelAvion(
+create TABLE qualificationModelAvion(
 	numQualifPilote INTEGER,
 	nummodel INTEGER,
 	numpilote INTEGER,
@@ -85,7 +85,7 @@ CREATE TABLE qualificationModelAvion(
 
 );
 
-CREATE TABLE pilote_Vol(
+create TABLE pilote_Vol(
 	numPiloteVol INTEGER,
 	numvolpassager INTEGER,
 	numpilote INTEGER,
@@ -95,7 +95,7 @@ CREATE TABLE pilote_Vol(
 
 );
 
-CREATE TABLE hotesse(
+create TABLE hotesse(
 	numhotesse INTEGER not null,
 	nompersonnelHotesse VARCHAR(30),
 	prenompersonnelHotesse VARCHAR(30),
@@ -108,7 +108,7 @@ CREATE TABLE hotesse(
 
 );
 
-CREATE TABLE hotesse_Vol(
+create TABLE hotesse_Vol(
 	numHotess_Vol INTEGER,
 	numvolpassager INTEGER,
 	numhotesse INTEGER,
@@ -119,7 +119,7 @@ CREATE TABLE hotesse_Vol(
 );
 
 
-CREATE TABLE client(
+create TABLE client(
 	numclient INTEGER not null,
 	nomclient VARCHAR(30),
 	prenomclient VARCHAR(30),
@@ -131,7 +131,7 @@ CREATE TABLE client(
 	CONSTRAINT pk_numclient PRIMARY KEY (numclient)
 );
 
-CREATE TABLE reservation(
+create TABLE reservation(
 	numreservation INTEGER not null,
 	datereservation TIMESTAMP,
 	numplace INTEGER,
@@ -150,12 +150,12 @@ create or replace trigger AUTO_INCREMENT_PILVOL_SEQ
     before insert
     on PILOTE_VOL
     for each row
-    when (new.NUMPILOTEVOL IS NULL)
-BEGIN
-    SELECT pilvol_seq.NEXTVAL
-    INTO :new.NUMPILOTEVOL
-    FROM dual;
-END;
+    when (new.NUMPILOTEVOL is null)
+begin
+    select pilvol_seq.nextval
+    into :new.NUMPILOTEVOL
+    from dual;
+end;
 
 
 --sequence hotesse_vol
@@ -164,15 +164,15 @@ create or replace trigger AUTO_INCREMENT_HOT_VOL
     before insert
     on HOTESSE_VOL
     for each row
-    when (new.NUMHOTESS_VOL IS NULL)
-BEGIN
-    SELECT HOT_VOL.NEXTVAL
-    INTO :new.NUMHOTESS_VOL
-    FROM dual;
-END;
+    when (new.NUMHOTESS_VOL is null)
+begin
+    select HOT_VOL.nextval
+    into :new.NUMHOTESS_VOL
+    from dual;
+end;
 
 
-create or replace PROCEDURE updatePilote (
+create or replace procedure updatePilote (
     IN_NOMPERSONNELPILOTE     in     PILOTE.NOMPERSONNELPILOTE%type,
     IN_PRENOMPERSONNELPILOTE  in     PILOTE.PRENOMPERSONNELPILOTE%type,
     IN_RUEPERSONNELPILOTE     in     PILOTE.RUEPERSONNELPILOTE%type,
@@ -182,11 +182,59 @@ create or replace PROCEDURE updatePilote (
 ) is
 
 begin
-    UPDATE PILOTE
-        SET NOMPERSONNELPILOTE = IN_NOMPERSONNELPILOTE,
+    update PILOTE
+        set NOMPERSONNELPILOTE = IN_NOMPERSONNELPILOTE,
             PRENOMPERSONNELPILOTE = IN_PRENOMPERSONNELPILOTE,
             RUEPERSONNELPILOTE = IN_RUEPERSONNELPILOTE,
             PAYSPERSONNELPILOTE = IN_PAYSPERSONNELPILOTE,
             LOCALISATIONACTUELLEPILOTE = IN_LOCALISATIONACTUELLEPILOTE
-        WHERE NUMPILOTE = IN_NUMPILOTE;
+        where NUMPILOTE = IN_NUMPILOTE;
+end;
+
+create or replace procedure updateVol(IN_DATEENREGISTREMENTVOL in VOLPASSAGER.DATEENREGISTREMENTVOL%type,
+                                      IN_DATEDEPART in VOLPASSAGER.DATEDEPART%type,
+                                      IN_DUREEVOL in VOLPASSAGER.DUREEVOL%type,
+                                      IN_DISTANCEVOL in VOLPASSAGER.DISTANCEVOL%type,
+                                      IN_AEROPORTORIGINE in VOLPASSAGER.AEROPORTORIGINE%type,
+                                      IN_AEROPORTDESTINATION in VOLPASSAGER.AEROPORTDESTINATION%type,
+                                      IN_NOMBREPLACEDISPOECO in VOLPASSAGER.NOMBREPLACEDISPOECO%type,
+                                      IN_NOMBREPLACEDISPOEAFF in VOLPASSAGER.NOMBREPLACEDISPOEAFF%type,
+                                      IN_NOMBREPLACEDISPOPRE in VOLPASSAGER.NOMBREPLACEDISPOPRE%type,
+                                      IN_NUMAVIONPASSAGER in VOLPASSAGER.NUMAVIONPASSAGER%type,
+                                      IN_NUMVOLPASSAGER in VOLPASSAGER.NUMVOLPASSAGER%type) is
+
+begin
+    update VOLPASSAGER
+    set DATEENREGISTREMENTVOL = IN_DATEENREGISTREMENTVOL,
+        DATEDEPART            = IN_DATEDEPART,
+        DUREEVOL              = IN_DUREEVOL,
+        DISTANCEVOL           = IN_DISTANCEVOL,
+        AEROPORTORIGINE       = IN_AEROPORTORIGINE,
+        AEROPORTDESTINATION   = IN_AEROPORTDESTINATION,
+        NOMBREPLACEDISPOECO   = IN_NOMBREPLACEDISPOECO,
+        NOMBREPLACEDISPOEAFF  = IN_NOMBREPLACEDISPOEAFF,
+        NOMBREPLACEDISPOPRE   = IN_NOMBREPLACEDISPOPRE,
+        NUMAVIONPASSAGER      = IN_NUMAVIONPASSAGER
+    where NUMVOLPASSAGER = IN_NUMVOLPASSAGER;
+end;
+
+create or replace procedure updateHotesse(IN_NOMPERSONNELHOTESSE in HOTESSE.NOMPERSONNELHOTESSE%type,
+                                          IN_PRENOMPERSONNELHOTESSE in HOTESSE.PRENOMPERSONNELHOTESSE%type,
+                                          IN_LANGUEMATERNELLE in HOTESSE.LANGUEMATERNELLE%type,
+                                          IN_DEUXIEMELANGUE in HOTESSE.DEUXIEMELANGUE%type,
+                                          IN_TROISIEMELANGUE in HOTESSE.TROISIEMELANGUE%type,
+                                          IN_LOCALISATIONACTUELLEHOTESSE in HOTESSE.LOCALISATIONACTUELLEHOTESSE%type,
+                                          IN_NBHEUREHOTESSE in HOTESSE.NBHEUREHOTESSE%type,
+                                          IN_NUMHOTESSE in HOTESSE.NUMHOTESSE%type) is
+
+begin
+    update HOTESSE
+    set NOMPERSONNELHOTESSE         = IN_NOMPERSONNELHOTESSE,
+        PRENOMPERSONNELHOTESSE      = IN_PRENOMPERSONNELHOTESSE,
+        LANGUEMATERNELLE            = IN_LANGUEMATERNELLE,
+        DEUXIEMELANGUE              = IN_DEUXIEMELANGUE,
+        TROISIEMELANGUE             = IN_TROISIEMELANGUE,
+        LOCALISATIONACTUELLEHOTESSE = IN_LOCALISATIONACTUELLEHOTESSE,
+        NBHEUREHOTESSE              = IN_NBHEUREHOTESSE
+    where NUMHOTESSE = IN_NUMHOTESSE;
 end;
