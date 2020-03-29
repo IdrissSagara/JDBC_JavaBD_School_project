@@ -40,7 +40,7 @@ public class PlanificationVolAirChance {
         }
 
         System.out.println("===Planificaiton d'un vol===\n");
-        System.out.println("Liste des avions disponibles\n");
+        System.out.println("Liste des vols disponibles\n");
         for (VolPassager vp : listVolPassager) {
             System.out.print("Avino N°: " + vp.getNumAvionPassager() + " -" + " Origin :" + vp.getAeroportOrigine() + " -" + " Destination: " + vp.getAeroportDestination() + "\n");
         }
@@ -197,10 +197,78 @@ public class PlanificationVolAirChance {
     }
 
     /**
-     * Mise à jour du pilote
+     * Modification de la Planification de vol
      *
      * @param conn
      */
+    public static void modifierPlanificationVol(Connection conn) throws SQLException {
+
+        System.out.println("=====Modification de la planification de vol=====\n");
+        System.out.println("Liste des vols disponibles \n");
+
+        // recuperation des vols disponibles
+        // proposer ensuite de selectionner le vol qu'il veut modifier
+
+        Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        ResultSet rs = stmt.executeQuery("select NUMAVIONPASSAGER, AEROPORTDESTINATION, AEROPORTORIGINE,NUMVOLPASSAGER  from VOLPASSAGER" +
+                "    natural join AVIONPASSAGER");
+
+        List<VolPassager> listVolPassager = new ArrayList<VolPassager>();
+
+        while (rs.next()) {
+            VolPassager vp = new VolPassager();
+            vp.setNumAvionPassager(rs.getInt(1));
+            vp.setAeroportOrigine(rs.getString(2));
+            vp.setAeroportDestination(rs.getString(3));
+            vp.setNumeroVolPassager(rs.getInt(4));
+            listVolPassager.add(vp);
+
+        }
+        int index = 1;
+        for (VolPassager vp : listVolPassager) {
+            System.out.print(index++ + " -" + " Avion n°: " + vp.getNumAvionPassager() + "|" + " Origin :" + vp.getAeroportOrigine() + " |" + " Destination: " + vp.getAeroportDestination() + " | Vol n°: " + vp.getNumeroVolPassager() + "\n");
+        }
+
+        int choix = DemandeSaisie.saisirInt("\nChoisir le numero de vol à modifier dans la liste proposer en haut. \n", 1, listVolPassager.size() + 1);
+        int numVol = listVolPassager.get(choix).getNumeroVolPassager();
+
+        int dureeVol = DemandeSaisie.saisirInt("Saisissez la duree du vol (Limite fixeé entre 0 et 1000000)", 0, 1000000);
+        int distanceVol = DemandeSaisie.saisirInt("Saisissez la distance du vol (Limite fixeé entre 0 et 200000) ", 0, 200000);
+        String origine = DemandeSaisie.saisirString("Saisissez l'aeroport origine (ex : France) ", 0, 26);
+        String destination = DemandeSaisie.saisirString("Saisissez l'aeroport destination (ex : Mali) ", 0, 26);
+        int nbrPlaceAff = DemandeSaisie.saisirInt("Saisissez le nombre de place affaires disponibles (Limite fixeé entre 0 et 500) ", 0, 500);
+        int nbrPlaceEco = DemandeSaisie.saisirInt("Saisissez le nombre de place economiques disponibles (Limite fixeé entre 0 et 500)", 0, 500);
+        int nbrPlacePre = DemandeSaisie.saisirInt("Saisissez le nombre de place en première disponibles (Limite fixeé entre 0 et 500)", 0, 500);
+        int numeroAvion = DemandeSaisie.saisirInt("Saisissez ici le numero de l'avion dans la liste proposer en haut ", 0, 1002999);
+        Timestamp dateDepart;
+        try {
+            dateDepart = DemandeSaisie.saisirDateTimestamp("Saisissez la date de depart (Année limitée entre 2020 et 2025 )", 2020, 2025);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            dateDepart = new Timestamp(System.currentTimeMillis());
+        }
+        VolDao volDao = VolDao.getInstance(conn);
+        try {
+            volDao.updateUsingVolProcedure(dateDepart, dureeVol, distanceVol, origine,
+                    destination, nbrPlaceEco, nbrPlaceAff, nbrPlacePre, numeroAvion, numVol);
+
+            System.out.println("---------------Recapitulatif du vol modifié---------------\n");
+            System.out.println("Le vol n°: " + numVol + "a été modifié avec succes avec les valeurs suivantes: ");
+            System.out.println("Duree de vol: " + dureeVol);
+            System.out.println("Distance de vol: " + distanceVol);
+            System.out.println("Aeroport origin: " + origine);
+            System.out.println("Aeroport destination: " + destination);
+            System.out.println("Nombre de place Eco: " + nbrPlaceEco);
+            System.out.println("Nombre de place Affaire: " + nbrPlaceAff);
+            System.out.println("Nombre de place Premiere: " + nbrPlacePre);
+            System.out.println("Numero Avion attribué au vol: " + numeroAvion);
+            System.out.println("\n---------------Fin Recapitulatif---------------\n");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
     public static void updatePilote(Connection conn) {
         PiloteDao piloteDao = PiloteDao.getInstance(conn);

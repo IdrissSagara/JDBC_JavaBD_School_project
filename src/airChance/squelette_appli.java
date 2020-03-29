@@ -50,22 +50,19 @@ public class squelette_appli {
 	        }
 	        int choix = 0;
 	        do {
-	            System.out.println("************ MENU ************");
-	            System.out.println("1 - Plannifier un vol");
-	            System.out.println("2 - Modifier un vol");
-	            System.out.println("3 - Supprimer un vol");
-	            System.out.println("4 - Terminer un vol");
-	            System.out.println("5 - Ajouter/Supprimer un personnel-");
-	            System.out.println("6 - Consulter les commandes d'un client");
-	            System.out.println("7 - Reservation d'un vol");
-	            System.out.println("8 - Modifier une reservation");
-	            System.out.println("9 - Supprimer une reservation");
-	            System.out.println("10 - Scenario 1");
-	            System.out.println("11 - Quitter");
-	            System.out.println("******************************");
-	            //RequeteAirChance.updatePilote(conn);
-	            //RequeteAirChance.deletePiloteVolPassager(conn);
-	            //RequeteAirChance.scenario1(conn, conn2);
+				System.out.println("************ MENU ************");
+				System.out.println("1 - Plannifier un vol");
+				System.out.println("2 - Modifier la planification d'un vol");
+				System.out.println("3 - Supprimer un vol");
+				System.out.println("4 - Terminer un vol");
+				System.out.println("5 - Ajouter/Supprimer un personnel-");
+				System.out.println("6 - Consulter les commandes d'un client");
+				System.out.println("7 - Reservation d'un vol");
+				System.out.println("8 - Modifier une reservation");
+				System.out.println("9 - Supprimer une reservation");
+				System.out.println("10 - Scenario 1");
+				System.out.println("11 - Quitter");
+				System.out.println("******************************");
 	            choix = LectureClavier.lireEntier("Votre choix : \n");
 	            switch (choix) {
 					case 1:
@@ -74,7 +71,7 @@ public class squelette_appli {
 						break;
 					case 2:
 						System.out.println("******************************");
-						PlanificationVolAirChance.updatePilote(conn);
+						PlanificationVolAirChance.modifierPlanificationVol(conn);
 						break;
 					case 3:
 						System.out.println("******************************");
