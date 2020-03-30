@@ -32,7 +32,7 @@ create TABLE avionpassager(
 	nombreplacepremiere INTEGER,
 	nummodel INTEGER,
 	CONSTRAINT pk_numavionpass PRIMARY KEY (numavionpassager),
-	CONSTRAINT fk_avionpassager_modele FOREIGN KEY (nummodel) REFERENCES modele (nummodel) ON DELETE CASCADE
+	CONSTRAINT fk_avionpassager_modele FOREIGN KEY (nummodel) REFERENCES modele (nummodel) ON delete CASCADE
 );
 
 create TABLE place(
@@ -45,7 +45,7 @@ create TABLE place(
 	CONSTRAINT position_check check (position in ('hublot', 'couloir', 'centre')),
 	CONSTRAINT typeclasse_check check (typeclasse in ('eco', 'premiere', 'affaire')),
 	CONSTRAINT pk_numplace PRIMARY KEY (numplace),
-	CONSTRAINT fk_place_modele FOREIGN KEY (nummodel) REFERENCES modele (nummodel) ON DELETE CASCADE
+	CONSTRAINT fk_place_modele FOREIGN KEY (nummodel) REFERENCES modele (nummodel) ON delete CASCADE
 );
 
 create TABLE volpassager(
@@ -65,7 +65,7 @@ create TABLE volpassager(
 	CONSTRAINT pk_numvolpassager PRIMARY KEY (numvolpassager),
 	CONSTRAINT etat_check CHECK (etatVol in('EN_SERVICE', 'SUPPRIMER')),
 	CONSTRAINT terminer_check CHECK (terminer in ('OUI','NON')),
-	CONSTRAINT fk_volpassager_avionpassager FOREIGN KEY (numavionpassager) REFERENCES avionpassager (numavionpassager) ON DELETE CASCADE
+	CONSTRAINT fk_volpassager_avionpassager FOREIGN KEY (numavionpassager) REFERENCES avionpassager (numavionpassager) ON delete CASCADE
 );
 
 create TABLE pilote(
@@ -84,8 +84,8 @@ create TABLE qualificationModelAvion(
 	numpilote INTEGER,
 	nbheurepilote INTEGER,
 	CONSTRAINT pk_qualifAvion PRIMARY KEY (numQualifPilote),
-	CONSTRAINT fk_model_qualification FOREIGN KEY (nummodel) REFERENCES modele (nummodel) ON DELETE CASCADE,
-	CONSTRAINT fk_pilote_qualif FOREIGN KEY (numpilote) REFERENCES pilote (numpilote) ON DELETE CASCADE
+	CONSTRAINT fk_model_qualification FOREIGN KEY (nummodel) REFERENCES modele (nummodel) ON delete CASCADE,
+	CONSTRAINT fk_pilote_qualif FOREIGN KEY (numpilote) REFERENCES pilote (numpilote) ON delete CASCADE
 
 );
 
@@ -94,8 +94,8 @@ create TABLE pilote_Vol(
 	numvolpassager INTEGER,
 	numpilote INTEGER,
 	CONSTRAINT pk_qualification PRIMARY KEY (numPiloteVol),
-	CONSTRAINT fk_volpassager_qualification FOREIGN KEY (numvolpassager) REFERENCES volpassager (numvolpassager) ON DELETE CASCADE,
-	CONSTRAINT fk_pilote_qualification FOREIGN KEY (numpilote) REFERENCES pilote (numpilote) ON DELETE CASCADE
+	CONSTRAINT fk_volpassager_qualification FOREIGN KEY (numvolpassager) REFERENCES volpassager (numvolpassager) ON delete CASCADE,
+	CONSTRAINT fk_pilote_qualification FOREIGN KEY (numpilote) REFERENCES pilote (numpilote) ON delete CASCADE
 
 );
 
@@ -117,8 +117,8 @@ create TABLE hotesse_Vol(
 	numvolpassager INTEGER,
 	numhotesse INTEGER,
 	CONSTRAINT pk_hotese_vol PRIMARY KEY (numHotess_Vol),
-	CONSTRAINT fk_vol_hotess_num FOREIGN KEY (numvolpassager) REFERENCES volpassager (numvolpassager) ON DELETE CASCADE,
-	CONSTRAINT fk_vol_hotess_numPil FOREIGN KEY (numhotesse) REFERENCES hotesse (numhotesse) ON DELETE CASCADE
+	CONSTRAINT fk_vol_hotess_num FOREIGN KEY (numvolpassager) REFERENCES volpassager (numvolpassager) ON delete CASCADE,
+	CONSTRAINT fk_vol_hotess_numPil FOREIGN KEY (numhotesse) REFERENCES hotesse (numhotesse) ON delete CASCADE
 
 );
 
@@ -144,9 +144,9 @@ create TABLE reservation(
 	etatReservation VARCHAR(20) DEFAULT 'OK',
 	CONSTRAINT pk_numreservation PRIMARY KEY (numreservation),
 	CONSTRAINT etatResevation_chek CHECK (etatReservation in ('OK','ANNULER')),
-	CONSTRAINT fk_reservation_place FOREIGN KEY (numplace) REFERENCES place (numplace) ON DELETE CASCADE,
-	CONSTRAINT fk_reservation_volpassager FOREIGN KEY (numvolpassager) REFERENCES volpassager (numvolpassager) ON DELETE CASCADE,
-	CONSTRAINT fk_reservation_client FOREIGN KEY (numclient) REFERENCES client (numclient) ON DELETE CASCADE
+	CONSTRAINT fk_reservation_place FOREIGN KEY (numplace) REFERENCES place (numplace) ON delete CASCADE,
+	CONSTRAINT fk_reservation_volpassager FOREIGN KEY (numvolpassager) REFERENCES volpassager (numvolpassager) ON delete CASCADE,
+	CONSTRAINT fk_reservation_client FOREIGN KEY (numclient) REFERENCES client (numclient) ON delete CASCADE
 );
 
 --sequence PILOTE_VOL
@@ -243,4 +243,24 @@ begin
         LOCALISATIONACTUELLEHOTESSE = IN_LOCALISATIONACTUELLEHOTESSE,
         NBHEUREHOTESSE              = IN_NBHEUREHOTESSE
     where NUMHOTESSE = IN_NUMHOTESSE;
+end;
+
+create or replace  procedure terminerVolPassager(IN_NUMVOLPASSAGER in VOLPASSAGER.NUMVOLPASSAGER%type) is
+    numPilote number;
+    nbh number;
+
+begin
+    update VOLPASSAGER set TERMINER = 'OUI' where NUMVOLPASSAGER = IN_NUMVOLPASSAGER;
+    for rec in (
+        select NUMPILOTE, DUREEVOL into numPilote, nbh from PILOTE_VOL natural join VOLPASSAGER where NUMVOLPASSAGER = IN_NUMVOLPASSAGER
+        )
+    loop
+        update QUALIFICATIONMODELAVION set NBHEUREPILOTE = NBHEUREPILOTE + rec.DUREEVOL where NUMPILOTE = rec.NUMPILOTE;
+    end loop;
+end;
+
+create or replace procedure reaffecterPassagers(IN_NUMVOL_OLD_VOL in VOLPASSAGER.NUMVOLPASSAGER%type, IN_NUMVOL_new_VOL in VOLPASSAGER.NUMVOLPASSAGER%type) is
+begin
+    --reaffecter les passagers du vol IN_NUMVOLPASSAGER à un autre vol (IN_NUMVOL_new_VOL)
+    update RESERVATION set NUMVOLPASSAGER = IN_NUMVOL_new_VOL where NUMVOLPASSAGER = IN_NUMVOL_OLD_VOL;
 end;
