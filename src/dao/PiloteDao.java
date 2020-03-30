@@ -28,14 +28,14 @@ public class PiloteDao {
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery(query);
 
-        return makePiloteList(rs);
+        return makePiloteList(rs, false);
     }
 
 
     public List<Pilote> getPiloteByNumVol(int numeroVol) throws SQLException {
         String query = "Select NUMPILOTE, NOMPERSONNELPILOTE, PRENOMPERSONNELPILOTE, RUEPERSONNELPILOTE," +
-                "PAYSPERSONNELPILOTE,LOCALISATIONACTUELLEPILOTE " +
-                "from PILOTE_VOL NATURAL JOIN PILOTE where NUMVOLPASSAGER = ?";
+                "PAYSPERSONNELPILOTE,LOCALISATIONACTUELLEPILOTE, NBHEUREPILOTE " +
+                "from PILOTE_VOL NATURAL JOIN PILOTE natural join QUALIFICATIONMODELAVION where NUMVOLPASSAGER = ?";
         ResultSet rs = null;
         PreparedStatement ps = conn.prepareStatement(query);
         ps.setInt(1, numeroVol);
@@ -43,10 +43,10 @@ public class PiloteDao {
         ps.executeQuery();
         rs = ps.getResultSet();
 
-        return makePiloteList(rs);
+        return makePiloteList(rs, true);
     }
 
-    private Pilote mapResultSetToPilote(ResultSet rs) throws SQLException {
+    private Pilote mapResultSetToPilote(ResultSet rs, boolean advanved) throws SQLException {
         Pilote p = null;
 
         if (rs != null) {
@@ -58,20 +58,26 @@ public class PiloteDao {
             String paysPersonnelPilote = rs.getString(i++);
             String localisationActuellePilote = rs.getString(i++);
 
+
             p = new Pilote(numPilote, nomPersonnelPilote,
                     prenomPersonnelPilote, ruePersonnelPilote,
                     paysPersonnelPilote, localisationActuellePilote);
+
+            if (advanved) {
+                int nbhvol = rs.getInt(i++);
+                p.setNombreHeurePilote(nbhvol);
+            }
         }
 
         return p;
     }
 
-    private List<Pilote> makePiloteList(ResultSet rs) throws SQLException {
+    private List<Pilote> makePiloteList(ResultSet rs, boolean advanved) throws SQLException {
         List<Pilote> pl = new ArrayList<>();
         Pilote p = null;
 
         while (rs.next()) {
-            p = mapResultSetToPilote(rs);
+            p = mapResultSetToPilote(rs, advanved);
             pl.add(p);
         }
         return pl;
@@ -95,6 +101,4 @@ public class PiloteDao {
 
         cstmt.executeUpdate();
     }
-
-
 }

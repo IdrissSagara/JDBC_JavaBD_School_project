@@ -32,7 +32,7 @@ create TABLE avionpassager(
 	nombreplacepremiere INTEGER,
 	nummodel INTEGER,
 	CONSTRAINT pk_numavionpass PRIMARY KEY (numavionpassager),
-	CONSTRAINT fk_avionpassager_modele FOREIGN KEY (nummodel) REFERENCES modele (nummodel)
+	CONSTRAINT fk_avionpassager_modele FOREIGN KEY (nummodel) REFERENCES modele (nummodel) ON DELETE CASCADE
 );
 
 create TABLE place(
@@ -45,7 +45,7 @@ create TABLE place(
 	CONSTRAINT position_check check (position in ('hublot', 'couloir', 'centre')),
 	CONSTRAINT typeclasse_check check (typeclasse in ('eco', 'premiere', 'affaire')),
 	CONSTRAINT pk_numplace PRIMARY KEY (numplace),
-	CONSTRAINT fk_place_modele FOREIGN KEY (nummodel) REFERENCES modele (nummodel)
+	CONSTRAINT fk_place_modele FOREIGN KEY (nummodel) REFERENCES modele (nummodel) ON DELETE CASCADE
 );
 
 create TABLE volpassager(
@@ -60,8 +60,12 @@ create TABLE volpassager(
 	nombreplacedispoeaff INTEGER,
 	nombreplacedispopre INTEGER,
 	numavionpassager INTEGER,
+	etatVol VARCHAR(10) DEFAULT 'EN_SERVICE',
+	terminer VARCHAR(3) DEFAULT 'OUI',
 	CONSTRAINT pk_numvolpassager PRIMARY KEY (numvolpassager),
-	CONSTRAINT fk_volpassager_avionpassager FOREIGN KEY (numavionpassager) REFERENCES avionpassager (numavionpassager)
+	CONSTRAINT etat_check CHECK (etatVol in('EN_SERVICE', 'SUPPRIMER')),
+	CONSTRAINT terminer_check CHECK (terminer in ('OUI','NON')),
+	CONSTRAINT fk_volpassager_avionpassager FOREIGN KEY (numavionpassager) REFERENCES avionpassager (numavionpassager) ON DELETE CASCADE
 );
 
 create TABLE pilote(
@@ -80,8 +84,8 @@ create TABLE qualificationModelAvion(
 	numpilote INTEGER,
 	nbheurepilote INTEGER,
 	CONSTRAINT pk_qualifAvion PRIMARY KEY (numQualifPilote),
-	CONSTRAINT fk_model_qualification FOREIGN KEY (nummodel) REFERENCES modele (nummodel),
-	CONSTRAINT fk_pilote_qualif FOREIGN KEY (numpilote) REFERENCES pilote (numpilote)
+	CONSTRAINT fk_model_qualification FOREIGN KEY (nummodel) REFERENCES modele (nummodel) ON DELETE CASCADE,
+	CONSTRAINT fk_pilote_qualif FOREIGN KEY (numpilote) REFERENCES pilote (numpilote) ON DELETE CASCADE
 
 );
 
@@ -90,8 +94,8 @@ create TABLE pilote_Vol(
 	numvolpassager INTEGER,
 	numpilote INTEGER,
 	CONSTRAINT pk_qualification PRIMARY KEY (numPiloteVol),
-	CONSTRAINT fk_volpassager_qualification FOREIGN KEY (numvolpassager) REFERENCES volpassager (numvolpassager),
-	CONSTRAINT fk_pilote_qualification FOREIGN KEY (numpilote) REFERENCES pilote (numpilote)
+	CONSTRAINT fk_volpassager_qualification FOREIGN KEY (numvolpassager) REFERENCES volpassager (numvolpassager) ON DELETE CASCADE,
+	CONSTRAINT fk_pilote_qualification FOREIGN KEY (numpilote) REFERENCES pilote (numpilote) ON DELETE CASCADE
 
 );
 
@@ -113,8 +117,8 @@ create TABLE hotesse_Vol(
 	numvolpassager INTEGER,
 	numhotesse INTEGER,
 	CONSTRAINT pk_hotese_vol PRIMARY KEY (numHotess_Vol),
-	CONSTRAINT fk_vol_hotess_num FOREIGN KEY (numvolpassager) REFERENCES volpassager (numvolpassager),
-	CONSTRAINT fk_vol_hotess_numPil FOREIGN KEY (numhotesse) REFERENCES hotesse (numhotesse)
+	CONSTRAINT fk_vol_hotess_num FOREIGN KEY (numvolpassager) REFERENCES volpassager (numvolpassager) ON DELETE CASCADE,
+	CONSTRAINT fk_vol_hotess_numPil FOREIGN KEY (numhotesse) REFERENCES hotesse (numhotesse) ON DELETE CASCADE
 
 );
 
@@ -137,10 +141,12 @@ create TABLE reservation(
 	numplace INTEGER,
 	numvolpassager INTEGER,
 	numclient INTEGER,
+	etatReservation VARCHAR(20) DEFAULT 'OK',
 	CONSTRAINT pk_numreservation PRIMARY KEY (numreservation),
-	CONSTRAINT fk_reservation_place FOREIGN KEY (numplace) REFERENCES place (numplace),
-	CONSTRAINT fk_reservation_volpassager FOREIGN KEY (numvolpassager) REFERENCES volpassager (numvolpassager),
-	CONSTRAINT fk_reservation_client FOREIGN KEY (numclient) REFERENCES client (numclient)
+	CONSTRAINT etatResevation_chek CHECK (etatReservation in ('OK','ANNULER')),
+	CONSTRAINT fk_reservation_place FOREIGN KEY (numplace) REFERENCES place (numplace) ON DELETE CASCADE,
+	CONSTRAINT fk_reservation_volpassager FOREIGN KEY (numvolpassager) REFERENCES volpassager (numvolpassager) ON DELETE CASCADE,
+	CONSTRAINT fk_reservation_client FOREIGN KEY (numclient) REFERENCES client (numclient) ON DELETE CASCADE
 );
 
 --sequence PILOTE_VOL

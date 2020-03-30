@@ -26,16 +26,16 @@ insert into place values (16,'centre','affaire',700,to_date('24-03-2019','DD-MM-
 insert into place values (17,'centre','eco',200,to_date('23-03-2019','DD-MM-YYYY'),8);
 
 
-insert into volpassager values (144,to_date('20-03-2019','DD-MM-YYYY'),to_timestamp('2014-07-02 06:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),8,3323,'Mali','France',400,20,30,12);
-insert into volpassager values (145,to_date('20-03-2019','DD-MM-YYYY'),to_timestamp('2014-07-02 06:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),33,5223,'ALGERIE','France',400,20,30,13);
-insert into volpassager values (146,to_date('20-03-2019','DD-MM-YYYY'),to_timestamp('2014-07-02 08:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),22,1223,'MAROC','France',400,20,30,32);
-insert into volpassager values (147,to_date('20-03-2019','DD-MM-YYYY'),to_timestamp('2014-07-03 03:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),8,2623,'CAMEROUNE','France',400,20,30,22);
-insert into volpassager values (148,to_date('20-03-2019','DD-MM-YYYY'),to_timestamp('2014-07-05 02:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),8,2223,'Mali','France',400,20,30,42);
-insert into volpassager values (149,to_date('20-03-2019','DD-MM-YYYY'),to_timestamp('2014-07-06 01:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),8,2923,'Mali','France',400,20,30,52);
-insert into volpassager values (140,to_date('20-03-2019','DD-MM-YYYY'),to_timestamp('2014-07-07 09:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),44,8223,'TUNIS','France',400,20,30,52);
-insert into volpassager values (141,to_date('20-03-2019','DD-MM-YYYY'),to_timestamp('2014-07-08 09:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),8,2223,'GUINNE','France',400,20,30,62);
-insert into volpassager values (142,to_date('20-03-2019','DD-MM-YYYY'),to_timestamp('2014-07-09 09:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),66,2333,'Mali','France',400,20,30,12);
-insert into volpassager values (143,to_date('20-03-2019','DD-MM-YYYY'),to_timestamp('2014-07-02 06:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),8,1123,'USA','France',400,20,30,12);
+insert into volpassager values (144,to_date('20-03-2019','DD-MM-YYYY'),to_timestamp('2014-07-02 06:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),8,3323,'Mali','France',400,20,30,12,'EN_SERVICE','NON');
+insert into volpassager values (145,to_date('20-03-2019','DD-MM-YYYY'),to_timestamp('2014-07-02 06:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),33,5223,'ALGERIE','France',400,20,30,13,'EN_SERVICE','NON');
+insert into volpassager values (146,to_date('20-03-2019','DD-MM-YYYY'),to_timestamp('2014-07-02 08:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),22,1223,'MAROC','France',400,20,30,32,'EN_SERVICE','NON');
+insert into volpassager values (147,to_date('20-03-2019','DD-MM-YYYY'),to_timestamp('2014-07-03 03:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),8,2623,'CAMEROUNE','France',400,20,30,22,'EN_SERVICE','NON');
+insert into volpassager values (148,to_date('20-03-2019','DD-MM-YYYY'),to_timestamp('2014-07-05 02:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),8,2223,'Mali','France',400,20,30,42,'EN_SERVICE','NON');
+insert into volpassager values (149,to_date('20-03-2019','DD-MM-YYYY'),to_timestamp('2014-07-06 01:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),8,2923,'Mali','France',400,20,30,52,'SUPPRIMER','NON');
+insert into volpassager values (140,to_date('20-03-2019','DD-MM-YYYY'),to_timestamp('2014-07-07 09:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),44,8223,'TUNIS','France',400,20,30,52,'EN_SERVICE','NON');
+insert into volpassager values (141,to_date('20-03-2019','DD-MM-YYYY'),to_timestamp('2014-07-08 09:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),8,2223,'GUINNE','France',400,20,30,62,'SUPPRIMER','NON');
+insert into volpassager values (142,to_date('20-03-2019','DD-MM-YYYY'),to_timestamp('2014-07-09 09:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),66,2333,'Mali','France',400,20,30,12,'SUPPRIMER','OUI');
+insert into volpassager values (143,to_date('20-03-2019','DD-MM-YYYY'),to_timestamp('2014-07-02 06:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),8,1123,'USA','France',400,20,30,12,'SUPPRIMER','NON');
 
 
 insert into pilote values (10,'momo','toure','rue askia modibo','Mali','Marseille');
@@ -123,14 +123,14 @@ insert into client values (37,'moi','toi','139 RUE songhoi','38000','usa','geogi
 insert into client values (38,'lui','elle','139 RUE songhoi','38000','usa','texas','900AAZZ');
 insert into client values (39,'nous','vous','139 RUE songhoi','38000','maroc','casa','45500AAZZ');
 
-insert into reservation values (100,to_timestamp('2014-07-02 06:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),11,144,30);
-insert into reservation values (101,to_timestamp('2014-07-03 01:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),12,140,31);
-insert into reservation values (102,to_timestamp('2014-07-04 02:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),13,141,32);
-insert into reservation values (103,to_timestamp('2014-07-05 03:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),14,142,33);
-insert into reservation values (104,to_timestamp('2014-07-06 04:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),15,143,34);
-insert into reservation values (105,to_timestamp('2014-07-07 05:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),16,144,35);
-insert into reservation values (106,to_timestamp('2014-07-08 06:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),17,145,36);
-insert into reservation values (107,to_timestamp('2014-07-09 07:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),12,146,37);
-insert into reservation values (108,to_timestamp('2014-07-10 08:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),17,146,38);
-insert into reservation values (109,to_timestamp('2014-07-09 09:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),11,147,39);
+insert into reservation values (100,to_timestamp('2014-07-02 06:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),11,144,30,'OK');
+insert into reservation values (101,to_timestamp('2014-07-03 01:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),12,140,31,'OK');
+insert into reservation values (102,to_timestamp('2014-07-04 02:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),13,141,32,'OK');
+insert into reservation values (103,to_timestamp('2014-07-05 03:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),14,142,33,'OK');
+insert into reservation values (104,to_timestamp('2014-07-06 04:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),15,143,34,'OK');
+insert into reservation values (105,to_timestamp('2014-07-07 05:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),16,144,35,'OK');
+insert into reservation values (106,to_timestamp('2014-07-08 06:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),17,145,36,'ANNULER');
+insert into reservation values (107,to_timestamp('2014-07-09 07:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),12,146,37,'ANNULER');
+insert into reservation values (108,to_timestamp('2014-07-10 08:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),17,146,38,'ANNULER');
+insert into reservation values (109,to_timestamp('2014-07-09 09:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),11,147,39,'ANNULER');
 

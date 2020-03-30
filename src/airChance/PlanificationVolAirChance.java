@@ -1,9 +1,7 @@
 package airChance;
 
 import dao.*;
-import data.Hotesse;
-import data.Pilote;
-import data.VolPassager;
+import data.*;
 
 import java.sql.*;
 import java.text.ParseException;
@@ -366,4 +364,141 @@ public class PlanificationVolAirChance {
         }
 
     }
+
+    public static void suppressionVol(Connection conn) throws SQLException {
+        VolDao volDao = VolDao.getInstance(conn);
+        List<VolPassager> volPassagerList = new ArrayList<>();
+
+        try {
+            volPassagerList = volDao.getVolByEtat(EtatVol.EN_SERVICE);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        int index = 1;
+        for (VolPassager vl : volPassagerList) {
+            System.out.print(index++ + " - " + vl.toString() + "\n\n");
+        }
+
+        int numOldVol = 0;
+        int numNewVol = 0;
+        boolean onError = false;
+
+        do {
+            if (onError) {
+                System.out.println("Désolé les 2 valeurs ne peuvent pas être les mêmes");
+            }
+            int indexOldVol = DemandeSaisie.saisirInt("Saisissez le numéro de la ligne correspondante au vol pour le supprimer", 1, volPassagerList.size());
+            numOldVol = volPassagerList.get(indexOldVol - 1).getNumeroVolPassager();
+
+            int indexNewVol = DemandeSaisie.saisirInt("Saisissez le numéro de vol qui va recevoir les passageres après suppression", 1, volPassagerList.size());
+            numNewVol = volPassagerList.get(indexNewVol - 1).getNumeroVolPassager();
+
+            if (numOldVol == numNewVol)
+                onError = true;
+            else
+                onError = false;
+
+        } while (onError);
+
+        VolPassager volUpdated = null;
+        int updatedRows = 0;
+
+
+        try {
+            ShowClientsVol(conn, numOldVol, numNewVol);
+
+            updatedRows = volDao.setEtatVolToSupprimer(numOldVol, numNewVol);
+            System.out.println("\nEtat après  avoir supprimer le vol  ");
+            ShowClientsVol(conn, numOldVol, numNewVol);
+
+            if (updatedRows > 0) {
+                volUpdated = volDao.getByNumVol(numOldVol);
+                System.out.println(volUpdated.toString());
+            } else {
+                System.out.println("pas pu modifer");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    private static void ShowClientsVol(Connection conn, int numOldVol, int numNewVol) throws SQLException {
+        System.out.println("\n");
+        System.out.println("\tLes passagers du vol " + numOldVol + " (ancien)");
+        ClientDao clientDao = ClientDao.getInstance(conn);
+        List<Client> clients = clientDao.getClientByVolNum(numOldVol);
+        int index = 1;
+        for (Client cl : clients) {
+            System.out.print(index++ + " - " + cl.toString() + "\n");
+        }
+        System.out.println("\t--Fin de liste--");
+
+        System.out.println("\n");
+        System.out.println("\tLes passagers du vol " + numNewVol + " (nouveau)");
+        clientDao = ClientDao.getInstance(conn);
+        clients = clientDao.getClientByVolNum(numNewVol);
+        index = 1;
+        for (Client cl : clients) {
+            System.out.print(index++ + " - " + cl.toString() + "\n");
+        }
+        System.out.println("\t--Fin de liste");
+    }
+
+    public static void TerminerEtatVol(Connection conn) throws SQLException {
+
+        VolDao volDao = VolDao.getInstance(conn);
+        List<VolPassager> volPassagerList = new ArrayList<>();
+
+        try {
+            volPassagerList = volDao.getAllVol();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        int index = 1;
+        for (VolPassager vl : volPassagerList) {
+            System.out.print(index++ + " -" + vl.toString() + "\n");
+        }
+
+        int indexV = DemandeSaisie.saisirInt("\n Saisissez le numéro correspondant au vol  pour le terminer ", 1, volPassagerList.size());
+        int numVol = volPassagerList.get(indexV - 1).getNumeroVolPassager();
+
+        PiloteDao piloteDao = PiloteDao.getInstance(conn);
+
+        try {
+            showPilotesByVolNum(numVol, piloteDao);
+
+            volDao.terminerUsingVolProcedure(numVol);
+
+            System.out.println("\nChangement du nombre d'heures de pilote apres  avoir terminer le vole\n");
+            showPilotesByVolNum(numVol, piloteDao);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void showPilotesByVolNum(int numVol, PiloteDao piloteDao) throws SQLException {
+        int index;
+        List<Pilote> piloteList = new ArrayList<>();
+        System.out.println("Les pilotes du vol " + numVol);
+        piloteList = piloteDao.getPiloteByNumVol(numVol);
+        index = 1;
+        if (piloteList.size() == 0) {
+            System.out.println("Aucun pilote trouvé");
+        }
+        for (Pilote pl : piloteList) {
+            System.out.print(index++ + " - " + pl.toString() + "\n");
+        }
+        System.out.println("\t--Fin de liste");
+
+
+    }
+
+
 }

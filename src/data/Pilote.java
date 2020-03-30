@@ -7,16 +7,24 @@ import java.sql.SQLException;
 
 public class Pilote {
 
-	private int numPilote;
-	private String nomPersonnelPilote;
-	private String prenomPersonnelPilote;
-	private String ruePersonnelPilote;
-	private String paysPersonnelPilote;
-	private String localisationActuellePilote;
-	
-	
-	public Pilote() {
-	}
+    private int numPilote;
+    private String nomPersonnelPilote;
+    private String prenomPersonnelPilote;
+    private String ruePersonnelPilote;
+    private String paysPersonnelPilote;
+    private String localisationActuellePilote;
+    private int nombreHeurePilote;
+
+    public Pilote() {
+    }
+
+    public int getNombreHeurePilote() {
+        return nombreHeurePilote;
+    }
+
+    public void setNombreHeurePilote(int nombreHeurePilote) {
+        this.nombreHeurePilote = nombreHeurePilote;
+    }
 
 
     public Pilote(int numPilote, String nomPersonnelPilote, String prenomPersonnelPilote, String ruePersonnelPilote,
@@ -117,77 +125,11 @@ public class Pilote {
         return resultats;
     }
 
-    public static void getAllPilote(Connection conn) {
-        //Connection conn = BD_Connection.getConnection();
-        PreparedStatement ps;
-        ResultSet resultats;
-        try {
-            String query = "SELECT * FROM pilote";
-            ps = conn.prepareStatement(query);
-        } catch (Exception e) {
-            System.out.println("Echec" + e);
-        }
-
+    @Override
+    public String toString() {
+        return "numero Pilote: " + numPilote +
+                ", nom Pilote: '" + nomPersonnelPilote + '\'' +
+                ", prenom Pilote: '" + prenomPersonnelPilote + '\'' +
+                ", nombre d'heures de vol: '" + nombreHeurePilote + '\'';
     }
-
-    public static void updatePilote(Connection conn, String nomPilote, String prenomPilote, String adressePilote,
-                                    String paysPilote, int nbHeurePilote, String localisationActuelle, int numModel, int numVol, int numPilote) {
-        //Connection conn = BD_Connection.getConnection();
-        PreparedStatement ps;
-        ResultSet resultats;
-        try {
-            String query = "UPDATE PILOTE,"
-                    + " SET NOMPERSONNELPILOTE= ?, PRENOMPERSONNELPILOTE= ?, RUEPERSONNELPILOTE= ?,"
-                    + " PAYSPERSONNELPILOTE=?, NBHEUREPILOTE=0, LOCALISATIONACTUELLEPILOTE=?,NUMMODEL= ?, NUMVOLPASSAGER= ?"
-                    + " WHERE NUMPILOTE=0 ";
-            ps = conn.prepareStatement(query);
-            ps = conn.prepareStatement(query);
-            int i = 1;
-            ps.setString(i++, nomPilote);
-            ps.setString(i++, prenomPilote);
-            ps.setString(i++, adressePilote);
-            ps.setString(i++, paysPilote);
-            ps.setInt(i++, nbHeurePilote);
-            ps.setString(i++, localisationActuelle);
-            ps.setInt(i++, numModel);
-            ps.setInt(i++, numVol);
-            ps.setInt(i++, numPilote);
-            ps.execute();
-
-        } catch (Exception e) {
-            System.out.println("Echec" + e);
-        }
-
-    }
-
-    public static void insererPilote(Connection conn, String nomPilote, String prenomPilote, String adressePilote,
-                                     String paysPilote, int nbHeurePilote, String localisationActuelle, int numModel, int numVol, int numPilote) {
-        //Connection conn = BD_Connection.getConnection();
-        PreparedStatement ps;
-        ResultSet resultats;
-        try {
-            String query = "INSERT INTO  PILOTE"
-                    + " (NUMPILOTE, NOMPERSONNELPILOTE, PRENOMPERSONNELPILOTE, RUEPERSONNELPILOTE, PAYSPERSONNELPILOTE,"
-                    + " LOCALISATIONACTUELLEPILOTE) values"
-                    + "(0, '', '', '', '', 0, '', 0, 0) ";
-            ps = conn.prepareStatement(query);
-            int i = 1;
-            ps.setInt(i++, numPilote);
-            ps.setString(i++, nomPilote);
-            ps.setString(i++, prenomPilote);
-            ps.setString(i++, adressePilote);
-            ps.setString(i++, paysPilote);
-            ps.setInt(i++, nbHeurePilote);
-            ps.setString(i++, localisationActuelle);
-            ps.setInt(i++, numModel);
-            ps.setInt(i++, numVol);
-            ps.execute();
-
-        } catch (Exception e) {
-            System.out.println("Echec" + e);
-        }
-
-    }
-
-
 }

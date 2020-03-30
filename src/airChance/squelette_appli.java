@@ -65,30 +65,32 @@ public class squelette_appli {
 				System.out.println("******************************");
 	            choix = LectureClavier.lireEntier("Votre choix : \n");
 	            switch (choix) {
-					case 1:
-						System.out.println("******************************");
-						PlanificationVolAirChance.planificationVol(conn);
-						break;
-					case 2:
-						System.out.println("******************************");
-						PlanificationVolAirChance.modifierPlanificationVol(conn);
-						break;
-					case 3:
-						System.out.println("******************************");
-						//RequeteAirChance.deleteVol(conn);
-						break;
-					case 4:
-						System.out.println("******************************");
-						break;
-					case 5:
-						System.out.println("******************************");
-	                    break;
-	                case 6:
-	                    System.out.println("******************************");
-	                    break;
-	                case 7:
-	                    System.out.println("******************************");
-	                    //requeteAirChancePetit.getAllvoyageAfterDate(conn);
+                    case 1:
+                        System.out.println("******************************");
+                        PlanificationVolAirChance.planificationVol(conn);
+                        break;
+                    case 2:
+                        System.out.println("******************************");
+                        PlanificationVolAirChance.modifierPlanificationVol(conn);
+                        break;
+                    case 3:
+                        System.out.println("******************************");
+                        PlanificationVolAirChance.suppressionVol(conn);
+
+                        break;
+                    case 4:
+                        System.out.println("******************************");
+                        PlanificationVolAirChance.TerminerEtatVol(conn);
+                        break;
+                    case 5:
+                        System.out.println("******************************");
+                        break;
+                    case 6:
+                        System.out.println("******************************");
+                        break;
+                    case 7:
+                        System.out.println("******************************");
+                        //requeteAirChancePetit.getAllvoyageAfterDate(conn);
 	                    break;
 	                case 8:
 	                    System.out.println("******************************");
@@ -106,7 +108,8 @@ public class squelette_appli {
 	                    choix = 11;
 	            }
 	        } while (choix != 11);
-	    }
+
+    }
 
 
 }

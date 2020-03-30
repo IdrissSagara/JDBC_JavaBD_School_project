@@ -4,9 +4,7 @@ import java.sql.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 
 public class VolPassager {
@@ -22,19 +20,32 @@ public class VolPassager {
     private int nombrePlaceDispoAff;
     private int nombreplacedispopre;
     private int numAvionPassager;
+    private String etatVol;
+    private String volEtatTerminer;
 
-    public VolPassager(int numeroVolPassager, String aeroportOrigine, String aeroportDestination) {
+    public VolPassager(int numAvionPassager, int numeroVolPassager, String aeroportOrigine, String aeroportDestination, String etatVol, String volEtatTerminer) {
         this.numeroVolPassager = numeroVolPassager;
-        this.aeroportOrigine = aeroportOrigine;
-        this.aeroportDestination = aeroportDestination;
-    }
-
-    public VolPassager(int numeroVolPassager, int dureeVol, String aeroportOrigine, String aeroportDestination, int numAvionPassager) {
-        this.numeroVolPassager = numeroVolPassager;
-        this.dureeVol = dureeVol;
         this.aeroportOrigine = aeroportOrigine;
         this.aeroportDestination = aeroportDestination;
         this.numAvionPassager = numAvionPassager;
+        this.etatVol = etatVol;
+        this.volEtatTerminer = volEtatTerminer;
+    }
+
+    public String getVolEtatTerminer() {
+        return volEtatTerminer;
+    }
+
+    public void setVolEtatTerminer(String volEtatTerminer) {
+        this.volEtatTerminer = volEtatTerminer;
+    }
+
+    public String getEtatVol() {
+        return etatVol;
+    }
+
+    public void setEtatVol(String etatVol) {
+        this.etatVol = etatVol;
     }
 
     public VolPassager(int numeroVolPassager, Date date, Timestamp datedepart, int dureeVol, int distanceVol, String aeroportOrigine, String aeroportDestination, int nombreplaceDispoEco, int nombrePlaceDispoAff, int nombreplacedispopre, int numAvionPassager) {
@@ -191,53 +202,14 @@ public class VolPassager {
         return numAvionPassager;
     }
 
-    public List<String> delete(int numVolPassager, Date date) {
-
-        SimpleDateFormat formater = null;
-        formater = new SimpleDateFormat("dd/MM/yyyy");
-
-        String query1 = "DELETE FROM volpassager where numvolpassager='" + numVolPassager + "'and datevol = TO_DATE('" + formater.format(date) + "','DD/MM/YYYY')";
-        String query2 = "DELETE FROM PlaceVolResa where numVolPassager='" + numVolPassager + "'and datevol = TO_DATE('" + formater.format(date) + "','DD/MM/YYYY')";
-        String query3 = "DELETE FROM HotesseVolPassager where numVolPassager='" + numVolPassager + "'and datevol = TO_DATE('" + formater.format(date) + "','DD/MM/YYYY')";
-        String query4 = "DELETE FROM PiloteVolPassager where numVolPassager='" + numVolPassager + "'and datevol = TO_DATE('" + formater.format(date) + "','DD/MM/YYYY')";
-
-        List<String> listquery = new ArrayList<String>();
-
-        listquery.add(query1);
-        listquery.add(query2);
-        listquery.add(query3);
-        listquery.add(query4);
-
-        return listquery;
-    }
-
     public void setNumAvionPassager(int numAvionPassager) {
         this.numAvionPassager = numAvionPassager;
     }
 
-    public String delete(int numVolPassager) {
-        String query = "DELETE FROM volpassager where numvolpassager='" + numVolPassager + "' ";
-
-        return query;
+    @Override
+    public String toString() {
+        return "Avion n°: " + getNumAvionPassager() + "|" + " Origin :" +
+                getAeroportOrigine() + " |" + " Destination: " + getAeroportDestination() + " | Vol n°: " + getNumeroVolPassager() +
+                " | etat Vol: " + getEtatVol() + " | Terminer: " + getVolEtatTerminer();
     }
-
-    public String finishVol(int numVolPassager) {
-        String query = "UPDATE volpassager SET estTermine=1 where numvolpassager = '" + numVolPassager + "'";
-
-        return query;
-    }
-
-    public String getAllVoyageBeforeDate() {
-        String query = "SELECT * FROM volpassager WHERE dateVol>sysdate";
-        return query;
-    }
-
-    public String getNbPlaceDispo(int numVolpassager, Date dateVol) {
-        SimpleDateFormat formater = null;
-        formater = new SimpleDateFormat("dd/MM/yyyy");
-        String query = "SELECT nombreplacedispoeco,nombreplacedispoeaff,nombreplacedispopre FROM volpassager WHERE dateVol=TO_DATE('" + formater.format(dateVol) + "','DD/MM/YYYY') AND numvolpassager=" + numVolpassager;
-        return query;
-    }
-
-
 }
