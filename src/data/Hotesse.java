@@ -86,9 +86,8 @@ public class Hotesse {
 
 	@Override
 	public String toString() {
-		return "nom: " + getNomPersonnelHotesse() + "|" + " Prenom: " +
-				getPrenomPersonnelHotesse() + "|" + " langue Maternelle: " + getLangueMaternelle() + "|" +
-				"Deuxieme Langue:" + getDeuxiemeLangue() + "|" + "Troisieme Langue: " + getTroisiemeLangue() +
-				"|" + " nombre d'heures : " + getNbHeureHotesse() + " ";
+		return "nom: " + getNomPersonnelHotesse() + " | " + " Prenom: " +
+				getPrenomPersonnelHotesse() + " | " + " langue Maternelle: " + getLangueMaternelle() +
+				" | " + " nombre d'heures : " + getNbHeureHotesse() + " ";
 	}
 }

@@ -40,10 +40,8 @@ public class GestionPersonnelAirChance {
         for (Pilote pl : piloteList) {
             System.out.print(index++ + " - " + pl.toString() + "\n");
         }
-
-
         if (insertedId == -1) {
-            System.out.println("Une erreur fatale s'est produite lors de l'insertion du pilote_vol");
+            System.out.println("Une erreur fatale s'est produite lors de l'insertion du pilote");
             return;
         }
     }
@@ -79,10 +77,79 @@ public class GestionPersonnelAirChance {
             System.out.print(index++ + " - " + hL.toString() + "\n");
         }
 
-
         if (insertId == -1) {
             System.out.println("Une erreur fatale s'est produite lors de l'insertion du pilote_vol");
             return;
         }
     }
+
+    public static void SupprimerPersonnelPilote(Connection conn) throws SQLException {
+
+        PiloteDao piloteDao = PiloteDao.getInstance(conn);
+
+        List<Pilote> piloteList = new ArrayList<>();
+        ;
+        System.out.println("Liste des pilotes:\n");
+
+        piloteList = piloteDao.getPilote();
+
+        int index = 1;
+        for (Pilote pl : piloteList) {
+            System.out.print(index++ + " - " + "numero Pilote: " + pl.getNumPilote() + "|" + " nom Pilote :" +
+                    pl.getNomPersonnelPilote() + " |" + " prenom Pilote: " +
+                    pl.getPrenomPersonnelPilote() + "\n");
+        }
+        int indexV = DemandeSaisie.saisirInt("\n Saisissez le numéro correspondant au pilote  pour le supprimer ", 1, piloteList.size());
+        int numPilote = piloteList.get(indexV - 1).getNumPilote();
+
+        try {
+            piloteDao.supprimerPilote(numPilote);
+            System.out.println("\n Changement après suppression\n");
+            List<Pilote> piloteListAfter;
+            piloteListAfter = piloteDao.getPilote();
+
+            int indexA = 1;
+            for (Pilote plA : piloteListAfter) {
+                System.out.print(indexA++ + " - " + "numero Pilote: " + plA.getNumPilote() + "|" + " nom Pilote :" +
+                        plA.getNomPersonnelPilote() + " |" + " prenom Pilote: " +
+                        plA.getPrenomPersonnelPilote() + "\n");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void SupprimerPersonnelHotesse(Connection conn) throws SQLException {
+        HotesseDao hotesseDao = HotesseDao.getInstance(conn);
+        List<Hotesse> hotesseList;
+        System.out.println("Liste de tous les Hotesse :\n");
+
+        hotesseList = hotesseDao.getAll();
+
+        int index = 1;
+        for (Hotesse hL : hotesseList) {
+            System.out.print(index++ + " - " + hL.toString() + "\n");
+        }
+        int indexV = DemandeSaisie.saisirInt("\n Saisissez le numéro correspondant a l'hotesse  pour le supprimer ", 1, hotesseList.size());
+        int numHotesse = hotesseList.get(indexV - 1).getNumHotesse();
+
+
+        try {
+            hotesseDao.supprimerHotesse(numHotesse);
+            System.out.println("\n Changement après suppression\n");
+            List<Hotesse> hotesseListAfter;
+            hotesseListAfter = hotesseDao.getAll();
+
+            int indexA = 1;
+            for (Hotesse hlA : hotesseListAfter) {
+                System.out.print(indexA++ + " - " + hlA.toString() + "\n");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
 }

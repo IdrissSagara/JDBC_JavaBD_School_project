@@ -46,6 +46,22 @@ public class PiloteDao {
         return ret;
     }
 
+    public int supprimerPilote(int numPilote) throws SQLException {
+        int operationResult = -1;
+        String query = "DELETE from PILOTE where NUMPILOTE = ?";
+        ResultSet rs = null;
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.setInt(1, numPilote);
+        int rows = ps.executeUpdate();
+
+        if (rows > 0) {
+            operationResult = rows;
+        } else {
+            System.out.println("erreur de supression");
+        }
+        return operationResult;
+    }
+
 
     public List<Pilote> getPilote() throws SQLException {
         String query = "select * from PILOTE";

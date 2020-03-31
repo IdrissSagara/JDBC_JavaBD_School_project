@@ -48,6 +48,22 @@ public class HotesseDao {
         return ret;
     }
 
+    public int supprimerHotesse(int numHotesse) throws SQLException {
+        int operationResult = -1;
+        String query = "DELETE from HOTESSE where NUMHOTESSE = ?";
+        ResultSet rs = null;
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.setInt(1, numHotesse);
+        int rows = ps.executeUpdate();
+
+        if (rows > 0) {
+            operationResult = rows;
+        } else {
+            System.out.println("erreur de supression");
+        }
+        return operationResult;
+    }
+
 
     public List<Hotesse> getAll() throws SQLException {
         String query = "select * from hotesse";

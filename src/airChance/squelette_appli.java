@@ -88,8 +88,10 @@ public class squelette_appli {
 						System.out.println("******************************");
 
 						System.out.println("\t\t 1 - Ajouter un nouveau pilote");
-						System.out.println("\t\t 2 - Ajouter un nouveau hotesse");
-						System.out.println("\t\t 3 - Quitter");
+						System.out.println("\t\t 2 - Supprimer un  pilote");
+						System.out.println("\t\t 3 - Ajouter un nouveau hotesse");
+						System.out.println("\t\t 4 - Supprimer un Hotesse");
+						System.out.println("\t\t 5 - Quitter ---Revenir au menu principal---");
 						sous_choix = LectureClavier.lireEntier("Votre choix pour ajouter/supprimer un personnel : \n");
 						switch (sous_choix) {
 							case 1:
@@ -98,13 +100,21 @@ public class squelette_appli {
 								break;
 							case 2:
 								System.out.println("\n");
-								GestionPersonnelAirChance.AjoutPersonnelHotesse(conn);
+								GestionPersonnelAirChance.SupprimerPersonnelPilote(conn);
 								break;
 							case 3:
+								System.out.println("\n");
+								GestionPersonnelAirChance.AjoutPersonnelHotesse(conn);
+								break;
+							case 4:
+								System.out.println("\n");
+								GestionPersonnelAirChance.SupprimerPersonnelHotesse(conn);
+								break;
+							case 5:
 								System.out.println("Quitter le sous menu");
 
 						}
-					} while (sous_choix != 3);
+					} while (sous_choix != 5);
 					break;
 				case 6:
 					System.out.println("******************************");
