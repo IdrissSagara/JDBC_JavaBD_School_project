@@ -21,6 +21,34 @@ public class HotesseDao {
         return hotesseDao;
     }
 
+
+    public int insertHotesse(String nomHotesse, String prenomHotesse, String langueMaternelle,
+                             String deuxiemeLangue, String troisiemeLangue, String localisationActu, int nbhHotesse) throws SQLException {
+        String query = "insert into HOTESSE ( NOMPERSONNELHOTESSE, PRENOMPERSONNELHOTESSE, LANGUEMATERNELLE, DEUXIEMELANGUE, TROISIEMELANGUE, LOCALISATIONACTUELLEHOTESSE, NBHEUREHOTESSE) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        ResultSet rs;
+
+        PreparedStatement ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+        int i = 1;
+        ps.setString(i++, nomHotesse);
+        ps.setString(i++, prenomHotesse);
+        ps.setString(i++, langueMaternelle);
+        ps.setString(i++, deuxiemeLangue);
+        ps.setString(i++, troisiemeLangue);
+        ps.setString(i++, localisationActu);
+        ps.setInt(i++, nbhHotesse);
+
+        ps.executeUpdate();
+        ps = conn.prepareStatement("select HOTESSE_SEQ.currval from dual");
+        rs = ps.executeQuery();
+        int ret = -1;
+        if (rs.next()) {
+            ret = (int) rs.getLong(1);
+        }
+        return ret;
+    }
+
+
     public List<Hotesse> getAll() throws SQLException {
         String query = "select * from hotesse";
         Statement stmt = conn.createStatement();
@@ -73,7 +101,6 @@ public class HotesseDao {
 
     /**
      * Trasforme un ResultSet de GetAll en list d'Hotesse
-     *
      * @param rs
      * @return
      * @throws SQLException

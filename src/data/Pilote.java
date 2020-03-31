@@ -128,7 +128,7 @@ public class Pilote {
 
     @Override
     public String toString() {
-        return "numero Pilote:: " + getNumPilote() + "|" + " nom Pilote :" +
+        return "numero Pilote: " + getNumPilote() + "|" + " nom Pilote :" +
                 getNomPersonnelPilote() + " |" + " prenom Pilote: " +
                 getPrenomPersonnelPilote() + " | nombre d'heures de vol: " + getNombreHeurePilote() + " ";
     }

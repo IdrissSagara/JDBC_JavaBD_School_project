@@ -1,6 +1,8 @@
 package airChance;
 
+import dao.HotesseDao;
 import dao.PiloteDao;
+import data.Hotesse;
 import data.Pilote;
 
 import java.sql.Connection;
@@ -10,7 +12,7 @@ import java.util.List;
 
 public class GestionPersonnelAirChance {
 
-    public static void AjoutPersonnel(Connection conn) throws SQLException {
+    public static void AjoutPersonnelPilote(Connection conn) throws SQLException {
 
         System.out.println("===Ajouter un nouveaux pilote===\n");
 
@@ -41,6 +43,44 @@ public class GestionPersonnelAirChance {
 
 
         if (insertedId == -1) {
+            System.out.println("Une erreur fatale s'est produite lors de l'insertion du pilote_vol");
+            return;
+        }
+    }
+
+    public static void AjoutPersonnelHotesse(Connection conn) throws SQLException {
+
+        System.out.println("===Ajouter un nouveaux Hotesse===\n");
+
+        String nomHotesse = DemandeSaisie.saisirString("\nSaisir le nom de l'hotesse: ", 0, 26);
+        String prenomHotesse = DemandeSaisie.saisirString("\nSaisir le prenom de l'hotesse: ", 0, 26);
+        String langueMaternelle = DemandeSaisie.saisirString("\nSaisir la langue maternelle: ", 0, 36);
+        String deuxiemeLangue = DemandeSaisie.saisirString("\nSaisir la deuxieme langue: ", 0, 26);
+        String troisiemeLangue = DemandeSaisie.saisirString("\nSaisir la troisieme langue: ", 0, 26);
+        String localisationActu = DemandeSaisie.saisirString("\nSaisir la localisation actuelle de l'hotesse: ", 0, 26);
+        int nbHeureHotesse = DemandeSaisie.saisirInt("\nSaisir le nombre d'heure de l'hotesse: ", 0, 10000);
+
+
+        //insert valeur dans Hotesse
+        HotesseDao hotesseDao = HotesseDao.getInstance(conn);
+        int insertId = -1;
+        List<Hotesse> hotesseList = new ArrayList<>();
+        try {
+            insertId = hotesseDao.insertHotesse(nomHotesse, prenomHotesse, langueMaternelle, deuxiemeLangue, troisiemeLangue, localisationActu, nbHeureHotesse);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Liste de tous les Hotesse après insertion:\n");
+
+        hotesseList = hotesseDao.getAll();
+
+        int index = 1;
+        for (Hotesse hL : hotesseList) {
+            System.out.print(index++ + " - " + hL.toString() + "\n");
+        }
+
+
+        if (insertId == -1) {
             System.out.println("Une erreur fatale s'est produite lors de l'insertion du pilote_vol");
             return;
         }

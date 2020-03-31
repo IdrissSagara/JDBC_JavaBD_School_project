@@ -14,11 +14,8 @@ drop table modele;
 drop sequence HOT_VOL;
 drop sequence PILVOL_SEQ;
 drop sequence PILOTE_SEQ;
+drop sequence HOTESSE_SEQ;
 
-drop procedure terminerVolPassager;
-drop procedure updateHotesse;
-drop procedure updateVol;
-drop procedure updatePilote;
 
 
 
@@ -194,6 +191,19 @@ create or replace trigger AUTO_INCREMENT_PILOTE_SEQ
 begin
     select PILOTE_SEQ.nextval
     into :new.NUMPILOTE
+    from dual;
+end;
+
+--sequence HOTESSE_SEQ
+create sequence HOTESSE_SEQ start with 40;
+create or replace trigger AUTO_INCREMENT_HOTESSE_SEQ
+    before insert
+    on HOTESSE
+    for each row
+    when (new.NUMHOTESSE is null)
+begin
+    select HOTESSE_SEQ.nextval
+    into :new.NUMHOTESSE
     from dual;
 end;
 
