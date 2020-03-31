@@ -2,10 +2,7 @@ package dao;
 
 import data.ReservationClient;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,5 +73,29 @@ public class ReservationDao {
         }
         return pl;
     }
+
+    public int save(int numVol, int numeroClient, int numeroPlace) throws SQLException {
+        String scarl = "insert into RESERVATION (datereservation, numplace, numvolpassager, numclient)" +
+                " values (?, ?, ?, ?)";
+
+        PreparedStatement ps = conn.prepareStatement(scarl);
+        int i = 1;
+        ps.setTimestamp(i++, new Timestamp(System.currentTimeMillis()));
+        ps.setInt(i++, numeroPlace);
+        ps.setInt(i++, numVol);
+        ps.setInt(i++, numeroClient);
+        ps.executeUpdate();
+
+        ps = conn.prepareStatement("select RES_SEQ.currval from dual");
+        ResultSet rs = ps.executeQuery();
+
+        int ret = -1;
+        if (rs.next()) {
+            ret = (int) rs.getLong(1);
+        }
+
+        return ret;
+    }
+
 
 }

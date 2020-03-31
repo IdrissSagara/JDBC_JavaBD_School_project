@@ -170,5 +170,20 @@ public class VolDao {
         return volList;
     }
 
+    public List<VolPassager> getVolByDepartDestination(String depart, String destination) throws SQLException {
+        List<VolPassager> volPassagerList = new ArrayList<>();
+        String query = "select NUMAVIONPASSAGER, NUMVOLPASSAGER, AEROPORTORIGINE,AEROPORTDESTINATION, ETATVOL,TERMINER" +
+                " from VOLPASSAGER where AEROPORTORIGINE = ? AND AEROPORTDESTINATION = ? AND ETATVOL='EN_SERVICE'";
+        PreparedStatement ps = conn.prepareStatement(query);
+        int i = 1;
+        ps.setString(i++, depart);
+        ps.setString(i++, destination);
+
+        ResultSet rs = ps.executeQuery();
+        volPassagerList = makeVolList(rs);
+
+        return volPassagerList;
+    }
+
 
 }
