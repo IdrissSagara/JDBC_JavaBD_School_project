@@ -463,7 +463,7 @@ public class PlanificationVolAirChance {
         }
         int index = 1;
         for (VolPassager vl : volPassagerList) {
-            System.out.print(index++ + " -" + vl.toString() + "\n");
+            System.out.print(index++ + " - " + vl.toString() + "\n");
         }
 
         int indexV = DemandeSaisie.saisirInt("\n Saisissez le numéro correspondant au vol  pour le terminer ", 1, volPassagerList.size());

@@ -22,8 +22,32 @@ public class PiloteDao {
         return piloteDao;
     }
 
+    public int insertPilote(String nomPilote, String prenomPilote, String adressePilote,
+                            String paysPilote, String localisationActuelle) throws SQLException {
+        String query = "insert into PILOTE ( NOMPERSONNELPILOTE, PRENOMPERSONNELPILOTE, RUEPERSONNELPILOTE, PAYSPERSONNELPILOTE, LOCALISATIONACTUELLEPILOTE) " +
+                "VALUES (?, ?, ?, ?, ?)";
+        ResultSet rs;
 
-    public List<Pilote> getAll() throws SQLException {
+        PreparedStatement ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+        int i = 1;
+        ps.setString(i++, nomPilote);
+        ps.setString(i++, prenomPilote);
+        ps.setString(i++, adressePilote);
+        ps.setString(i++, paysPilote);
+        ps.setString(i++, localisationActuelle);
+
+        ps.executeUpdate();
+        ps = conn.prepareStatement("select PILOTE_SEQ.currval from dual");
+        rs = ps.executeQuery();
+        int ret = -1;
+        if (rs.next()) {
+            ret = (int) rs.getLong(1);
+        }
+        return ret;
+    }
+
+
+    public List<Pilote> getPilote() throws SQLException {
         String query = "select * from PILOTE";
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery(query);

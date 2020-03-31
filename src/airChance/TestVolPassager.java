@@ -1,16 +1,8 @@
 package airChance;
 
 import connection.BD_Connection;
-import dao.ClientDao;
-import dao.VolDao;
-import data.Client;
-import data.EtatVol;
-import data.VolPassager;
 
 import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class TestVolPassager {
 
@@ -99,7 +91,7 @@ public class TestVolPassager {
 		int indexH = DemandeSaisie.saisirInt("Saisissez le numéro de l'hotesse pour le modifier", 1, hotesseList.size());
 		int numHotesse = hotesseList.get(indexH - 1).getNumHotesse();
 		System.out.println("num hotesse" + numHotesse);*/
-		VolDao volDao = VolDao.getInstance(conn);
+/*		VolDao volDao = VolDao.getInstance(conn);
 		List<VolPassager> volPassagerList = new ArrayList<>();
 
 		try {
@@ -184,6 +176,8 @@ public class TestVolPassager {
 			System.out.print(index++ + " - " + cl.toString() + "\n");
 		}
 		System.out.println("\t--Fin de liste");
+	}*/
 	}
+
 
 }

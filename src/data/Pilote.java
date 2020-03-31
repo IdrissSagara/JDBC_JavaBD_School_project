@@ -125,11 +125,11 @@ public class Pilote {
         return resultats;
     }
 
+
     @Override
     public String toString() {
-        return "numero Pilote: " + numPilote +
-                ", nom Pilote: '" + nomPersonnelPilote + '\'' +
-                ", prenom Pilote: '" + prenomPersonnelPilote + '\'' +
-                ", nombre d'heures de vol: '" + nombreHeurePilote + '\'';
+        return "numero Pilote:: " + getNumPilote() + "|" + " nom Pilote :" +
+                getNomPersonnelPilote() + " |" + " prenom Pilote: " +
+                getPrenomPersonnelPilote() + " | nombre d'heures de vol: " + getNombreHeurePilote() + " ";
     }
 }

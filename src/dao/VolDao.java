@@ -24,7 +24,12 @@ public class VolDao {
         return volDao;
     }
 
-    // recuperation de tous les vols et l'ajouter dans une liste
+    /**
+     * recuperation de tous les vols et l'ajouter dans une liste
+     *
+     * @return
+     * @throws SQLException
+     */
     public List<VolPassager> getAllVol() throws SQLException {
         String query = "select NUMAVIONPASSAGER, NUMVOLPASSAGER, AEROPORTORIGINE,AEROPORTDESTINATION, ETATVOL,TERMINER  from VOLPASSAGER" +
                 "    natural join AVIONPASSAGER" +
@@ -70,16 +75,6 @@ public class VolDao {
     /**
      * Procedure de mise a jour d'un vol
      *
-     * @param DATEDEPART
-     * @param DUREEVOL
-     * @param DISTANCEVOL
-     * @param AEROPORTORIGINE
-     * @param AEROPORTDESTINATION
-     * @param NOMBREPLACEDISPOECO
-     * @param NOMBREPLACEDISPOEAFF
-     * @param NOMBREPLACEDISPOPRE
-     * @param NUMAVIONPASSAGER
-     * @param NUMVOLPASSAGER
      * @throws SQLException
      */
     public void updateUsingVolProcedure(Timestamp DATEDEPART,
@@ -174,4 +169,6 @@ public class VolDao {
 
         return volList;
     }
+
+
 }

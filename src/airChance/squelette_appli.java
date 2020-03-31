@@ -84,6 +84,7 @@ public class squelette_appli {
                         break;
                     case 5:
                         System.out.println("******************************");
+						GestionPersonnelAirChance.AjoutPersonnel(conn);
                         break;
                     case 6:
                         System.out.println("******************************");

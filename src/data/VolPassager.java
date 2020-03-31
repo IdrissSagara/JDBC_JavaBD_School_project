@@ -90,8 +90,6 @@ public class VolPassager {
         PreparedStatement ps;
         ResultSet resultats;
         try {
-
-            //String query = "INSERT INTO volpassager values (" + numVol + "," + "TO_DATE('" + formater.format(this.date) + "','YYYY-MM-DD')" + ","+ "TO_DATE('" + formater.format(this.datedepart) + "','YYYY-MM-DD'),"+ "TO_TIMESTAMP('" + formatter.format(this.heureDepart) + "','YYYY-MM-DD HH24:MI:SS.FF')"+ ","+ this.dureeVol + "," + this.distanceVol + ",'" + origine  + "','" + destination + "',"+this.nombreplaceDispoEco + "," + this.nombrePlaceDispoAff + "," + this.nombreplacedispopre +  "," + numAvion + ")";
             String query = "insert into volpassager (NUMVOLPASSAGER, dateEnregistrementVol, DATEDEPART, "
                     + "DUREEVOL, DISTANCEVOL, AEROPORTORIGINE, AEROPORTDESTINATION, NOMBREPLACEDISPOECO, "
                     + "NOMBREPLACEDISPOEAFF, NOMBREPLACEDISPOPRE, NUMAVIONPASSAGER) values"
