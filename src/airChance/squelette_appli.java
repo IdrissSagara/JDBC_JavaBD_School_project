@@ -121,11 +121,10 @@ public class squelette_appli {
 					break;
 				case 7:
 					System.out.println("******************************");
-					//requeteAirChancePetit.getAllvoyageAfterDate(conn);
+					GestionReservationAirChance.Reserver(conn);
 					break;
 				case 8:
 					System.out.println("******************************");
-					GestionReservationAirChance.Reserver(conn);
 					break;
 				case 9:
 					System.out.println("******************************");
