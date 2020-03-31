@@ -112,16 +112,16 @@ insert into hotesse_Vol values (9,143,28);
 
 
 
-insert into client values (30,'ronaldo','sonppa','139 RUE songhoi','38000','madrid','espagne','500AAZ');
-insert into client values (31,'FRDeric','kanoute','139 RUE songhoi','38000','Mali','bko','600AAZZ');
-insert into client values (32,'moulaye','diarra','139 RUE songhoi','38000','senegal','dkr','700AAZZ');
-insert into client values (33,'idriss','sagara','139 RUE songhoi','38000','Mali','mopti','200AAZZ');
-insert into client values (34,'yacouba','sagara','139 RUE songhoi','38000','france','paris','100AAZZ');
-insert into client values (35,'rokia','sagara','139 RUE songhoi','38000','france','grenoble','300AAZZ');
-insert into client values (36,'kadi','berthe','139 RUE songhoi','38000','usa','new york','400AAZZ');
-insert into client values (37,'moi','toi','139 RUE songhoi','38000','usa','geogie','800AAZZ');
-insert into client values (38,'lui','elle','139 RUE songhoi','38000','usa','texas','900AAZZ');
-insert into client values (39,'nous','vous','139 RUE songhoi','38000','maroc','casa','45500AAZZ');
+insert into client values (30,'ronaldo','sonppa','139 RUE songhoi','38000','madrid','espagne','500AAZ',10,0);
+insert into client values (31,'FRDeric','kanoute','139 RUE songhoi','38000','Mali','bko','600AAZZ',10,0);
+insert into client values (32,'moulaye','diarra','139 RUE songhoi','38000','senegal','dkr','700AAZZ',10,0);
+insert into client values (33,'idriss','sagara','139 RUE songhoi','38000','Mali','mopti','200AAZZ',10,0);
+insert into client values (34,'yacouba','sagara','139 RUE songhoi','38000','france','paris','100AAZZ',10,0);
+insert into client values (35,'rokia','sagara','139 RUE songhoi','38000','france','grenoble','300AAZZ',10,0);
+insert into client values (36,'kadi','berthe','139 RUE songhoi','38000','usa','new york','400AAZZ',10,0);
+insert into client values (37,'moi','toi','139 RUE songhoi','38000','usa','geogie','800AAZZ',10,0);
+insert into client values (38,'lui','elle','139 RUE songhoi','38000','usa','texas','900AAZZ',10,0);
+insert into client values (39,'nous','vous','139 RUE songhoi','38000','maroc','casa','45500AAZZ',10,0);
 
 insert into reservation values (100,to_timestamp('2014-07-02 06:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),11,144,30,'OK');
 insert into reservation values (101,to_timestamp('2014-07-03 01:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),12,140,31,'OK');
@@ -134,3 +134,9 @@ insert into reservation values (107,to_timestamp('2014-07-09 07:14:00.742000000'
 insert into reservation values (108,to_timestamp('2014-07-10 08:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),17,146,38,'ANNULER');
 insert into reservation values (109,to_timestamp('2014-07-09 09:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'),11,147,39,'ANNULER');
 
+insert into PlaceVolResa values (1,11,140,100);
+insert into PlaceVolResa values (2,12,141,101);
+insert into PlaceVolResa values (3,13,142,102);
+insert into PlaceVolResa values (4,14,143,103);
+insert into PlaceVolResa values (5,15,144,104);
+insert into PlaceVolResa values (6,16,145,105);

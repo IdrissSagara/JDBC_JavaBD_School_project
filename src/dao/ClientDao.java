@@ -2,10 +2,7 @@ package dao;
 
 import data.Client;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +28,31 @@ public class ClientDao {
                 "    from RESERVATION natural join client where NUMVOLPASSAGER = ?";
         PreparedStatement ps = conn.prepareStatement(ak74);
         ps.setInt(1, volNum);
+        ResultSet rs = ps.executeQuery();
+
+        clients = makeClientsList(rs);
+
+        return clients;
+    }
+
+    public List<Client> getAllClient() throws SQLException {
+        List<Client> clients = null;
+        String ak74 = "select NUMCLIENT, NOMCLIENT, PRENOMCLIENT from CLIENT";
+        Statement ps = conn.createStatement();
+        ResultSet rs = ps.executeQuery(ak74);
+
+        clients = makeClientsList(rs);
+
+        return clients;
+    }
+
+
+    public List<Client> getClientByNumClient(int numClient) throws SQLException {
+        List<Client> clients = null;
+        String ak74 = "select NUMCLIENT, NOMCLIENT, PRENOMCLIENT" +
+                "    from RESERVATION natural join client where NUMVOLPASSAGER = ?";
+        PreparedStatement ps = conn.prepareStatement(ak74);
+        ps.setInt(1, numClient);
         ResultSet rs = ps.executeQuery();
 
         clients = makeClientsList(rs);

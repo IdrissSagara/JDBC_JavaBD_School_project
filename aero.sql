@@ -1,4 +1,5 @@
 
+drop table PlaceVolResa;
 drop table reservation;
 drop table client;
 drop table hotesse_Vol;
@@ -136,6 +137,8 @@ create TABLE client(
 	villeclient VARCHAR(30),
 	paysclient VARCHAR(30),
 	numpassport VARCHAR(30),
+	nbPointFidelite INTEGER,
+	aReduction INTEGER,
 	CONSTRAINT pk_numclient PRIMARY KEY (numclient)
 );
 
@@ -151,6 +154,17 @@ create TABLE reservation(
 	CONSTRAINT fk_reservation_place FOREIGN KEY (numplace) REFERENCES place (numplace) ON delete CASCADE,
 	CONSTRAINT fk_reservation_volpassager FOREIGN KEY (numvolpassager) REFERENCES volpassager (numvolpassager) ON delete CASCADE,
 	CONSTRAINT fk_reservation_client FOREIGN KEY (numclient) REFERENCES client (numclient) ON delete CASCADE
+);
+
+create TABLE PlaceVolResa(
+    num_place_vol_resa INTEGER,
+    numplace INTEGER,
+    numvolpassager INTEGER,
+    numreservation INTEGER,
+    CONSTRAINT pk_numreser_place_vol PRIMARY KEY (num_place_vol_resa),
+	CONSTRAINT fk_PlaceVolResa_place FOREIGN KEY (numplace) REFERENCES place (numplace),
+	CONSTRAINT fk_PlaceVolResa_volpassager FOREIGN KEY (numvolpassager) REFERENCES volpassager (numvolpassager),
+	CONSTRAINT fk_PlaceVolResa_reservation FOREIGN KEY (numreservation) REFERENCES reservation (numreservation)
 );
 
 --sequence PILOTE_VOL

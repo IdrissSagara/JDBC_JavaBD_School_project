@@ -95,8 +95,8 @@ public class Client {
 
     @Override
     public String toString() {
-        return "numclient: " + numclient +
-                ", nomclient: '" + nomclient + '\'' +
-                ", prenomclient: '" + prenomclient + '\'';
+        return "Numero Client: " + numclient +
+                " | Nom Client: " + nomclient + " " +
+                "| Prenom Client: " + prenomclient + " ";
     }
 }

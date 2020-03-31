@@ -60,7 +60,6 @@ public class squelette_appli {
 			System.out.println("7 - Reservation d'un vol");
 			System.out.println("8 - Modifier une reservation");
 			System.out.println("9 - Supprimer une reservation");
-			System.out.println("10 - Scenario 1");
 			System.out.println("11 - Quitter");
 			System.out.println("******************************");
 			choix = LectureClavier.lireEntier("Votre choix : \n");
@@ -118,6 +117,7 @@ public class squelette_appli {
 					break;
 				case 6:
 					System.out.println("******************************");
+					GestionReservationAirChance.ConsultationCommandeClients(conn);
 					break;
 				case 7:
 					System.out.println("******************************");
@@ -129,11 +129,6 @@ public class squelette_appli {
 				case 9:
 					System.out.println("******************************");
 					break;
-				case 10:
-					System.out.println("******************************");
-	                    /*RequeteAirChance.updatePilote(conn);
-	                    RequeteAirChance.deletePiloteVolPassager(conn);
-	                    RequeteAirChance.scenario1(conn, conn2);*/
 				case 11:
 					System.out.println("Deconnexion");
 					choix = 11;
