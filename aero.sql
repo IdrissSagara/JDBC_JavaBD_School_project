@@ -162,9 +162,9 @@ create TABLE PlaceVolResa(
     numvolpassager INTEGER,
     numreservation INTEGER,
     CONSTRAINT pk_numreser_place_vol PRIMARY KEY (num_place_vol_resa),
-	CONSTRAINT fk_PlaceVolResa_place FOREIGN KEY (numplace) REFERENCES place (numplace),
-	CONSTRAINT fk_PlaceVolResa_volpassager FOREIGN KEY (numvolpassager) REFERENCES volpassager (numvolpassager),
-	CONSTRAINT fk_PlaceVolResa_reservation FOREIGN KEY (numreservation) REFERENCES reservation (numreservation)
+	CONSTRAINT fk_PlaceVolResa_place FOREIGN KEY (numplace) REFERENCES place (numplace) ON delete CASCADE,
+	CONSTRAINT fk_PlaceVolResa_volpassager FOREIGN KEY (numvolpassager) REFERENCES volpassager (numvolpassager) ON delete CASCADE,
+	CONSTRAINT fk_PlaceVolResa_reservation FOREIGN KEY (numreservation) REFERENCES reservation (numreservation) ON delete CASCADE
 );
 
 --sequence PILOTE_VOL
@@ -307,4 +307,19 @@ create or replace procedure reaffecterPassagers(IN_NUMVOL_OLD_VOL in VOLPASSAGER
 begin
     --reaffecter les passagers du vol IN_NUMVOLPASSAGER à un autre vol (IN_NUMVOL_new_VOL)
     update RESERVATION set NUMVOLPASSAGER = IN_NUMVOL_new_VOL where NUMVOLPASSAGER = IN_NUMVOL_OLD_VOL;
+end;
+
+--sequence reservation
+drop sequence RES_SEQ;
+create sequence RES_SEQ start with 30;
+
+create or replace trigger AUTO_INCREMENT_RES_SEQ
+    before insert
+    on RESERVATION
+    for each row
+    when (new.NUMRESERVATION is null)
+begin
+    select RES_SEQ.nextval
+    into :new.NUMRESERVATION
+    from dual;
 end;

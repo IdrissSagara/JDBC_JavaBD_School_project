@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 public class ReservationClient {
     private String nom;
     private String prenom;
+    private int numRes;
     private int numVol;
     private int numPlace;
     private String aeroportOrigine;
@@ -13,7 +14,7 @@ public class ReservationClient {
     private String typeClasse;
     private int PrixPlace;
 
-    public ReservationClient(String nom, String prenom, int numVol, int numPlace, String aeroportOrigine, String getAeroportDestination, Timestamp dateDepart, String typeClasse, int prixPlace) {
+    public ReservationClient(int numRes, String nom, String prenom, int numVol, int numPlace, String aeroportOrigine, String getAeroportDestination, Timestamp dateDepart, String typeClasse, int prixPlace) {
         this.nom = nom;
         this.prenom = prenom;
         this.numVol = numVol;
@@ -23,6 +24,7 @@ public class ReservationClient {
         this.dateDepart = dateDepart;
         this.typeClasse = typeClasse;
         PrixPlace = prixPlace;
+        this.numRes = numRes;
     }
 
     public String getNom() {
@@ -95,6 +97,10 @@ public class ReservationClient {
 
     public void setPrixPlace(int prixPlace) {
         PrixPlace = prixPlace;
+    }
+
+    public int getNumRes() {
+        return numRes;
     }
 
     @Override

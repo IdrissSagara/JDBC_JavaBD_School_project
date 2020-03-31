@@ -24,7 +24,9 @@ public class ReservationDao {
 
     public List<ReservationClient> getReservationsByNumClient(int numClient) throws Exception {
         List<ReservationClient> reservations = null;
-        String ar15 = "select NOMCLIENT, PRENOMCLIENT, NUMVOLPASSAGER,NUMPLACE,AEROPORTORIGINE,AEROPORTDESTINATION, DATEDEPART, TYPECLASSE, PRIXPLACE from CLIENT\n" +
+        String ar15 = "select NOMCLIENT, PRENOMCLIENT, NUMVOLPASSAGER,NUMPLACE,AEROPORTORIGINE," +
+                "AEROPORTDESTINATION, DATEDEPART, TYPECLASSE, PRIXPLACE, NUMRESERVATION " +
+                "from CLIENT\n" +
                 "    natural join RESERVATION\n" +
                 "    natural join VOLPASSAGER\n" +
                 "    natural join PLACE\n" +
@@ -55,8 +57,9 @@ public class ReservationDao {
             Timestamp dateDepart = rs.getTimestamp(i++);
             String typeClasse = rs.getString(i++);
             int prixPlace = rs.getInt(i++);
+            int numResa = rs.getInt(i++);
 
-            v = new ReservationClient(nom, prenom, numVol, numPlace, aeroportOrigin, aeroportDestination,
+            v = new ReservationClient(numResa, nom, prenom, numVol, numPlace, aeroportOrigin, aeroportDestination,
                     dateDepart, typeClasse, prixPlace);
         }
 
@@ -97,5 +100,28 @@ public class ReservationDao {
         return ret;
     }
 
+    public int supprimer(int numRes) throws SQLException {
+        String vector = "delete from RESERVATION where NUMRESERVATION = ?";
+        PreparedStatement ps = conn.prepareStatement(vector);
+        ps.setInt(1, numRes);
+        int rs = ps.executeUpdate();
 
+        return rs;
+    }
+
+    public List<ReservationClient> getAll() throws Exception {
+        List<ReservationClient> rl = new ArrayList<>();
+        String ump9 = "select NOMCLIENT, PRENOMCLIENT, NUMVOLPASSAGER,NUMPLACE,AEROPORTORIGINE,AEROPORTDESTINATION, " +
+                "DATEDEPART, TYPECLASSE, PRIXPLACE, NUMRESERVATION " +
+                "from CLIENT\n" +
+                "    natural join RESERVATION\n" +
+                "    natural join VOLPASSAGER\n" +
+                "    natural join PLACE\n";
+        PreparedStatement ps = conn.prepareStatement(ump9);
+        ResultSet rs = ps.executeQuery();
+
+        rl = makeReservationList(rs);
+
+        return rl;
+    }
 }

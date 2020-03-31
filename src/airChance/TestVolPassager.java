@@ -1,13 +1,8 @@
 package airChance;
 
 import connection.BD_Connection;
-import dao.ClientDao;
-import dao.PlaceDao;
 import dao.ReservationDao;
-import dao.VolDao;
-import data.Client;
-import data.Place;
-import data.VolPassager;
+import data.ReservationClient;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -18,9 +13,9 @@ public class TestVolPassager {
 
 	public static void main(String[] args) {
 
-		Connection conn = BD_Connection.getConnection();
+        Connection conn = BD_Connection.getConnection();
 
-		VolDao volDao = VolDao.getInstance(conn);
+		/*VolDao volDao = VolDao.getInstance(conn);
 
 		List<VolPassager> volPassagerList = new ArrayList<>();
 
@@ -28,9 +23,9 @@ public class TestVolPassager {
 		String depart = DemandeSaisie.saisirString(" Saisissez votre ville de depart ", 1, 30);
 		String destination = DemandeSaisie.saisirString(" Saisissez votre ville d'arrivée ", 1, 30);
 
-/**
- * selection de la destination et du depart
- */
+*//**
+         * selection de la destination et du depart
+         *//*
 
 		System.out.println("Les vols disponible et en service pour la destination: " + depart + " - " + destination + ":\n");
 
@@ -41,9 +36,9 @@ public class TestVolPassager {
 				System.out.println("\t\t\t Désolé Pas de vol disponible pour cette destination");
 			}
 
-/**
- * selection du vol
- */
+*//**
+         * selection du vol
+         *//*
 			int index = 1;
 			for (VolPassager vol : volPassagerList) {
 
@@ -53,9 +48,9 @@ public class TestVolPassager {
 			int indexV = DemandeSaisie.saisirInt("\n Saisissez le numéro correspondant au vol ", 1, volPassagerList.size());
 			int numVol = volPassagerList.get(indexV - 1).getNumeroVolPassager();
 
-/**
- * selection de la place
- */
+*//**
+         * selection de la place
+         *//*
 			PlaceDao placeDao = PlaceDao.getInstance(conn);
 			List<Place> placeList = new ArrayList<>();
 			System.out.println("\t\t\t\t\tPlace disponible au avions liée à ce vol\n");
@@ -78,9 +73,9 @@ public class TestVolPassager {
 
 			System.out.println("num place" + numeroPlace);
 
-/**
- * selection du client
- */
+*//**
+         * selection du client
+         *//*
 			ClientDao clientDao = ClientDao.getInstance(conn);
 			List<Client> cLientList = new ArrayList<>();
 
@@ -106,8 +101,44 @@ public class TestVolPassager {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-		}
-	}
+		}*/
+
+
+        try {
+            ReservationDao reservationDao = ReservationDao.getInstance(conn);
+            List<ReservationClient> reservationClientList = new ArrayList<>();
+            reservationClientList = reservationDao.getAll();
+            showResaFromDB(reservationClientList);
+            int indexR = 0;
+
+            indexR = DemandeSaisie.saisirInt("Saisissez le numéro de la ligne correspondant à la reservation", 1, reservationClientList.size());
+            int numResa = reservationClientList.get(indexR).getNumRes();
+            System.out.println("numero de reservation " + numResa);
+            indexR = reservationDao.supprimer(numResa);
+            System.out.println("resa supprimé " + indexR);
+
+            reservationClientList = reservationDao.getAll();
+            showResaFromDB(reservationClientList);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static void showResaFromDB(List<ReservationClient> reservationClientList) {
+        System.out.println("Liste des reservations");
+
+        int indexR = 1;
+        for (ReservationClient rc : reservationClientList) {
+            System.out.println(indexR++ + " - " + rc.toString());
+        }
+    }
 
 
 }

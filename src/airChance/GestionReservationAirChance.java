@@ -139,5 +139,30 @@ public class GestionReservationAirChance {
         System.out.println("Reservation inserted " + res);
     }
 
+    public static void supprimerResa(Connection conn) throws Exception {
+        ReservationDao reservationDao = ReservationDao.getInstance(conn);
+        List<ReservationClient> reservationClientList = new ArrayList<>();
+        reservationClientList = reservationDao.getAll();
+        showResaFromDB(reservationClientList);
+        int indexR = 0;
+
+        indexR = DemandeSaisie.saisirInt("Saisissez le numéro de la ligne correspondant à la reservation", 1, reservationClientList.size());
+        int numResa = reservationClientList.get(indexR).getNumRes();
+        System.out.println("numero de reservation " + numResa);
+        indexR = reservationDao.supprimer(numResa);
+        System.out.println("resa supprimé " + indexR);
+
+        reservationClientList = reservationDao.getAll();
+        showResaFromDB(reservationClientList);
+    }
+
+    private static void showResaFromDB(List<ReservationClient> reservationClientList) {
+        System.out.println("Liste des reservations");
+
+        int indexR = 1;
+        for (ReservationClient rc : reservationClientList) {
+            System.out.println(indexR++ + " - " + rc.toString());
+        }
+    }
 
 }

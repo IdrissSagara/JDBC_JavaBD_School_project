@@ -14,9 +14,9 @@ public class squelette_appli {
 
     static Connection conn;
 
-    public static void main(String args[]) throws SQLException {
+    public static void main(String args[]) throws Exception {
 
-        try {
+		try {
 
 			// Enregistrement du driver Oracle
 			System.out.print("Loading Oracle driver... ");
@@ -128,6 +128,7 @@ public class squelette_appli {
 					break;
 				case 9:
 					System.out.println("******************************");
+					GestionReservationAirChance.supprimerResa(conn);
 					break;
 				case 11:
 					System.out.println("Deconnexion");
